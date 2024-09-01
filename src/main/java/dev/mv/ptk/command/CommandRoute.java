@@ -6,6 +6,7 @@ import dev.mv.utilsx.generic.Option;
 import dev.mv.utilsx.generic.Pair;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -87,20 +88,51 @@ public class CommandRoute {
     }
 
     Object[] toParams(Player player, String[] args) {
-        Object[] ret = new Object[args.length + 1];
-        ret[0] = player;
+        Vec<Object> params = new Vec<>();
+        params.push(player);
 
         boolean isOptNow = false;
-
         int i = 0;
-        for (var iterator =  signature.stream().filter(e -> e.is(ArgumentType.class)).map(e -> e.<ArgumentType>value()).iterator(); iterator.hasNext(); ) {
-            ArgumentType item = iterator.next();
-            if (item == ArgumentType.OPTIONAL) {
-                isOptNow = true;
-                continue;
-            }
 
+        loop:
+        for (var entry : signature) {
+            if (entry.is(String.class)) continue;
+            ArgumentType type = entry.value();
+            switch (type) {
+                case STRING -> {
+                    if (isOptNow) {
+                        if (i < args.length) params.push(Option.some(args[i]));
+                        else params.push(Option.none());
+                    }
+                    else params.push(args[i]);
+                }
+                case INTEGER -> {
+                    if (isOptNow) {
+                        if (i < args.length) params.push(Option.some(Integer.parseInt(args[i])));
+                        else params.push(Option.<Integer>none());
+                    }
+                    else params.push(Integer.parseInt(args[i]));
+                }
+                case FLOAT -> {
+                    if (isOptNow) {
+                        if (i < args.length) params.push(Option.some(Float.parseFloat(args[i])));
+                        else params.push(Option.<Float>none());
+                    }
+                    else params.push(Float.parseFloat(args[i]));
+                }
+                case OPTIONAL -> {
+                    isOptNow = true;
+                    continue;
+                }
+                case EXTRA -> {
+                    if (i < args.length) params.push(Arrays.copyOfRange(args, i, args.length));
+                    else params.push(new String[0]);
+                    break loop;
+                }
+            }
+            i++;
         }
-        return ret;
+
+        return params.toArray();
     }
 }

@@ -1,5 +1,6 @@
 package dev.mv.ptk.command;
 
+@Command("sell")
 public class SellCommand extends AbstractCommand {
     protected SellCommand() {
         super(new CommandRoutes.Builder()
@@ -13,5 +14,13 @@ public class SellCommand extends AbstractCommand {
                     .then()
                 .build()
         );
+    }
+
+    public void call_sell(int amount) {
+
+    }
+
+    public void call_buy(int amount) {
+
     }
 }
