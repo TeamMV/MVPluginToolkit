@@ -1,4 +1,6 @@
 package dev.mv.test;
 
-public class Test {
+import dev.mv.ptk.PluginToolkit;
+
+public final class Test extends PluginToolkit {
 }

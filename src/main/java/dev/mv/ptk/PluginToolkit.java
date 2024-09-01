@@ -2,7 +2,7 @@ package dev.mv.ptk;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public abstract class MVPluginToolkit extends JavaPlugin {
+public abstract class PluginToolkit extends JavaPlugin {
 
     @Override
     public void onEnable() {
@@ -11,6 +11,6 @@ public abstract class MVPluginToolkit extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        
+
     }
 }
