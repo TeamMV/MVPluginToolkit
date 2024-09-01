@@ -66,7 +66,7 @@
             <groupId>dev.mv</groupId>
             <artifactId>utilsx</artifactId>
             <version>2.1</version>
-            <scope>provided</scope>
+            <scope>system</scope>
             <systemPath>${project.basedir}/libs/utilsx-2.1.jar</systemPath>
         </dependency>
     </dependencies>
