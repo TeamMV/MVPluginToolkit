@@ -1,16 +1,12 @@
 package dev.mv.ptk.module;
 
 import dev.mv.ptk.PluginToolkit;
-import dev.mv.ptk.command.AbstractCommand;
-import dev.mv.ptk.command.Command;
-import dev.mv.utilsx.UtilsX;
-import org.bukkit.command.CommandExecutor;
+import dev.mv.ptk.Utils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class ModuleManager {
-    private Map<String, Module> modules;
+    private HashMap<String, Module> modules;
     private PluginToolkit toolkit;
 
     public ModuleManager(PluginToolkit toolkit) {
@@ -19,13 +15,10 @@ public class ModuleManager {
     }
 
     public void registerModules() {
-        var classes = UtilsX.getAllClasses(i -> !UtilsX.containsAny(i, "com.google.j2objc", "com.google.errorprone",
-                "com.google.code", "com.google.guava", "net.md_5.bungee", "org.spigotmc", "org.bukkit", "org.joml",
-                "org.yaml", "org.checkerframework", "dev.mv.ptk", "javax.annotation", "org.jetbrains.annotations"));
-
-        classes.iter()
+        Utils.FILTERED_CLASSES.iterCopied()
             .filter(Module.class::isAssignableFrom)
             .forEach(clazz -> {
+                if (clazz.equals(Module.class)) return;
                 try {
                     registerModule((Module) clazz.getConstructor(PluginToolkit.class).newInstance(toolkit));
                 } catch (Exception e) {
@@ -34,7 +27,7 @@ public class ModuleManager {
             });
     }
 
-    public void registerModule(Module module) {
+    private void registerModule(Module module) {
         modules.put(module.getId(), module);
     }
 
@@ -48,5 +41,9 @@ public class ModuleManager {
         } catch (ClassCastException e) {
             return null;
         }
+    }
+
+    public <T extends Module> T require(String module) {
+        return (T) modules.get(module);
     }
 }

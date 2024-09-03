@@ -1,6 +1,6 @@
 package dev.mv.ptk;
 
-import dev.mv.ptk.command.Commands;
+import dev.mv.ptk.module.Module;
 import dev.mv.ptk.module.ModuleManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,5 +21,9 @@ public abstract class PluginToolkit extends JavaPlugin {
 
     public ModuleManager getModules() {
         return modules;
+    }
+
+    public <T extends Module> T require(String module) {
+        return modules.require(module);
     }
 }
