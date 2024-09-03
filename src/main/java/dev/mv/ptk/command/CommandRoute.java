@@ -31,7 +31,11 @@ public class CommandRoute {
             if (expected.is(ArgumentType.class)) {
                 ArgumentType type = expected.value();
                 if (type == ArgumentType.EXTRA || type == ArgumentType.OPTIONAL) return true;
-                if (type != getArgumentType(args[i])) return false;
+                ArgumentType provided = getArgumentType(args[i]);
+                if (type != provided) {
+                    if (type == ArgumentType.FLOAT && provided == ArgumentType.INTEGER) continue;
+                    return false;
+                };
             }
             else {
                 String subcommand = expected.value();
@@ -48,7 +52,7 @@ public class CommandRoute {
         if (input.matches("\\d+")) {
             return ArgumentType.INTEGER;
         }
-        if (input.matches("\\d+\\.\\d*")) {
+        if (input.matches("(\\d+\\.\\d*)|(\\.\\d+)")) {
             return ArgumentType.FLOAT;
         }
         return ArgumentType.STRING;
