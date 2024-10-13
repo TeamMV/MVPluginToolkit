@@ -12,7 +12,7 @@
     <name>ptk</name>
 
     <properties>
-        <java.version>22</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -37,6 +37,25 @@
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-5</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -66,8 +85,6 @@
             <groupId>dev.mv</groupId>
             <artifactId>utilsx</artifactId>
             <version>2.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/utilsx-2.1.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

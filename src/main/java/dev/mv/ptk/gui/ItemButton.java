@@ -1,5 +1,7 @@
 package dev.mv.ptk.gui;
 
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,16 +34,21 @@ public class ItemButton extends Component{
     }
 
     public interface Listener {
-        void click(int slot, boolean isShift, boolean isRight);
+        void click(int slot, boolean isShift, boolean isRight, HumanEntity clicker);
     }
 
     public void addListener(Listener listener) {
         listeners.add(listener);
     }
 
+    public ItemButton withListener(Listener listener) {
+        listeners.add(listener);
+        return this;
+    }
+
     public void click(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
-            listeners.forEach(l -> l.click(slot, e.isShiftClick(), e.isRightClick()));
+            listeners.forEach(l -> l.click(slot, e.isShiftClick(), e.isRightClick(), e.getWhoClicked()));
         }
     }
 

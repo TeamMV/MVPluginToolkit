@@ -1,5 +1,7 @@
 package dev.mv.ptk.gui;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -8,13 +10,19 @@ import java.util.List;
 public class InventoryInterface extends CompoundComponent {
     private Inventory inventory;
 
-    public void open() {
+    public InventoryInterface(String title) {
+        inventory = Bukkit.createInventory(null, 54, title);
+    }
+
+    public void open(Player player) {
         positionChildren();
 
         if (!children.isEmpty()) {
             Component child = children.get(0);
             child.open(inventory);
         }
+
+        player.openInventory(inventory);
     }
 
     @Override
@@ -34,10 +42,5 @@ public class InventoryInterface extends CompoundComponent {
     @Override
     public int getHeight() {
         return inventory.getSize() / 9;
-    }
-
-    @Override
-    public void open(Inventory inventory) {
-
     }
 }

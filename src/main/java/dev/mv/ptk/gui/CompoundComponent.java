@@ -20,4 +20,9 @@ public abstract class CompoundComponent extends Component {
     public void open(Inventory inventory) {
         children.forEach(c -> c.open(inventory));
     }
+
+    public CompoundComponent with(Component component) {
+        addComponent(component);
+        return this;
+    }
 }
