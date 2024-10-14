@@ -1,0 +1,4 @@
+name: MVPtk
+version: '1.0'
+main: dev.mv.ptk.Ptk
+api-version: '1.20'

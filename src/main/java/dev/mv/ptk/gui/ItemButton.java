@@ -33,6 +33,13 @@ public class ItemButton extends Component{
         inventory.setItem(slot, display);
     }
 
+    @Override
+    public void clickEvent(InventoryClickEvent e) {
+        if (e.getSlot() == slot) {
+            listeners.forEach(l -> l.click(slot, e.isShiftClick(), e.isRightClick(), e.getWhoClicked()));
+        }
+    }
+
     public interface Listener {
         void click(int slot, boolean isShift, boolean isRight, HumanEntity clicker);
     }
@@ -44,12 +51,6 @@ public class ItemButton extends Component{
     public ItemButton withListener(Listener listener) {
         listeners.add(listener);
         return this;
-    }
-
-    public void click(InventoryClickEvent e) {
-        if (e.getSlot() == slot) {
-            listeners.forEach(l -> l.click(slot, e.isShiftClick(), e.isRightClick(), e.getWhoClicked()));
-        }
     }
 
     public ItemStack getDisplay() {

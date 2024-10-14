@@ -15,7 +15,7 @@ public class ModuleManager {
     }
 
     public void registerModules() {
-        Utils.FILTERED_CLASSES.iterCopied()
+        Utils.CLASSES.iterCopied()
             .filter(Module.class::isAssignableFrom)
             .forEach(clazz -> {
                 if (clazz.equals(Module.class)) return;

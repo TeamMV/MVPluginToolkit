@@ -15,7 +15,7 @@ public class Commands extends Module {
 
     @Override
     public void enable() {
-        Utils.FILTERED_CLASSES.iterCopied()
+        Utils.PLUGIN_CLASSES.get(toolkit.getName()).iterCopied()
             .filter(clazz -> AbstractCommand.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(Command.class))
             .forEach(clazz -> {
                 Command command = clazz.getAnnotation(Command.class);

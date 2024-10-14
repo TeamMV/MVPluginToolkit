@@ -33,4 +33,9 @@ public final class Test extends PluginToolkit {
 
         State<Integer> players = new State<>(Bukkit.getOnlinePlayers().size());
     }
+
+    @Override
+    public void stop() {
+
+    }
 }

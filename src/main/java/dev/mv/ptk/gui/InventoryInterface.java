@@ -1,5 +1,6 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.PluginListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,6 +16,7 @@ public class InventoryInterface extends CompoundComponent {
     }
 
     public void open(Player player) {
+        PluginListener.INTERFACES.add(this);
         positionChildren();
 
         if (!children.isEmpty()) {
@@ -42,5 +44,9 @@ public class InventoryInterface extends CompoundComponent {
     @Override
     public int getHeight() {
         return inventory.getSize() / 9;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

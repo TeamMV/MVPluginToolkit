@@ -1,5 +1,6 @@
 package dev.mv.ptk.gui;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 public abstract class Component {
@@ -10,4 +11,6 @@ public abstract class Component {
     public abstract int getHeight();
 
     public abstract void open(Inventory inventory);
+
+    public abstract void clickEvent(InventoryClickEvent e);
 }

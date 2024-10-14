@@ -37,11 +37,13 @@ public class InsetFrame extends CompoundComponent {
 
     @Override
     public int getWidth() {
+        if (parent == null) return 0;
         return parent.getWidth() - left - right;
     }
 
     @Override
     public int getHeight() {
+        if (parent == null) return 0;
         return parent.getHeight() - top - bottom;
     }
 }

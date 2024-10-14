@@ -2,16 +2,16 @@ package dev.mv.ptk.command;
 
 @Command("sell")
 public class SellCommand extends AbstractCommand {
-    protected SellCommand() {
+    public SellCommand() {
         super(new CommandRoutes.Builder()
                 .withRoute()
-                    .withNamed("sell")
-                    .withType(CommandRoute.ArgumentType.INTEGER)
-                    .then()
+                .withNamed("sell")
+                .withType(CommandRoute.ArgumentType.INTEGER)
+                .then()
                 .withRoute()
-                    .withNamed("buy")
-                    .withType(CommandRoute.ArgumentType.INTEGER)
-                    .then()
+                .withNamed("buy")
+                .withType(CommandRoute.ArgumentType.INTEGER)
+                .then()
                 .build()
         );
     }
@@ -24,3 +24,5 @@ public class SellCommand extends AbstractCommand {
 
     }
 }
+
+

@@ -1,6 +1,7 @@
 package dev.mv.ptk.utils.display;
 
 import dev.mv.ptk.utils.State;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class DisplayName {
         StringBuilder builder = new StringBuilder();
         for (Object component : components) {
             if (component instanceof Builder.FormattedValue<?> fv) {
-                builder.append(fv.colorCode);
+                builder.append(ChatColor.translateAlternateColorCodes('&', fv.colorCode));
                 builder.append(fv.state.read().toString());
             } else {
                 builder.append(component);
