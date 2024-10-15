@@ -18,9 +18,13 @@ public class ModuleManager {
         Utils.CLASSES.iterCopied()
             .filter(Module.class::isAssignableFrom)
             .forEach(clazz -> {
-                if (clazz.equals(Module.class)) return;
+                if (clazz.equals(Module.class) || clazz.equals(SingletonModule.class)) return;
                 try {
-                    registerModule((Module) clazz.getConstructor(PluginToolkit.class).newInstance(toolkit));
+                    if (SingletonModule.class.isAssignableFrom(clazz)) {
+                        registerModule((Module) clazz.getMethod("getInstance").invoke(null));
+                    } else {
+                        registerModule((Module) clazz.getConstructor(PluginToolkit.class).newInstance(toolkit));
+                    }
                 } catch (Exception e) {
                     System.err.println("Failed to load module " + clazz.getSimpleName());
                 }

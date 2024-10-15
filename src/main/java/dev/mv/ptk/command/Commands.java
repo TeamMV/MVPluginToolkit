@@ -6,7 +6,7 @@ import dev.mv.ptk.module.Module;
 
 import java.util.HashMap;
 
-public class Commands extends Module {
+public final class Commands extends Module {
     private HashMap<String, AbstractCommand> commands = new HashMap<>();
 
     public Commands(PluginToolkit toolkit) {

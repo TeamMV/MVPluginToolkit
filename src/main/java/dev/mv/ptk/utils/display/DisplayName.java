@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 public class DisplayName {
     private List<Object> components;
     private List<Entity> holders;
+    private String last;
+    private Consumer<String> onChange;
 
     public void applyTo(Entity entity) {
         holders.add(entity);
@@ -29,10 +31,24 @@ public class DisplayName {
             }
         }
 
+        last = builder.toString();
+
         holders.forEach(h -> {
             h.setCustomNameVisible(true);
-            h.setCustomName(builder.toString());
+            h.setCustomName(last);
         });
+
+        if (onChange != null) {
+            onChange.accept(last);
+        }
+    }
+
+    public void setOnChange(Consumer<String> onChange) {
+        this.onChange = onChange;
+    }
+
+    public String getAsString() {
+        return last;
     }
 
     public static class Builder<B> {
@@ -71,6 +87,8 @@ public class DisplayName {
             if (output != null) {
                 output.accept(name);
             }
+
+            name.rebuild();
 
             return res;
         }

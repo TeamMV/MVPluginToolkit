@@ -7,11 +7,9 @@ import dev.mv.utilsx.generic.Pair;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 public class CommandRoute {
-    List<Either<ArgumentType, String>> signature;
+    Vec<Either<ArgumentType, String>> signature;
 
     public enum ArgumentType {
         STRING,
@@ -21,28 +19,28 @@ public class CommandRoute {
         EXTRA, // optional LAST parameter in array, if included, String[] args is included at the end of function signature
     }
 
-    CommandRoute(List<Either<ArgumentType, String>> signature) {
+    CommandRoute(Vec<Either<ArgumentType, String>> signature) {
         this.signature = signature;
     }
 
     boolean isCompatible(String[] args) {
-        for (int i = 0; i < signature.size(); i++) {
-            var expected = signature.get(i);
-            if (expected.is(ArgumentType.class)) {
-                ArgumentType type = expected.value();
+        for (var pair : signature.iter().enumerate()) {
+            if (pair.value.is(ArgumentType.class)) {
+                ArgumentType type = pair.value.value();
                 if (type == ArgumentType.EXTRA || type == ArgumentType.OPTIONAL) return true;
-                ArgumentType provided = getArgumentType(args[i]);
+                if (pair.i >= args.length) return false;
+                ArgumentType provided = getArgumentType(args[pair.i]);
                 if (type != provided) {
                     if (type == ArgumentType.FLOAT && provided == ArgumentType.INTEGER) continue;
                     return false;
                 };
             }
             else {
-                String subcommand = expected.value();
-                if (!subcommand.equals(args[i])) return false;
+                String subcommand = pair.value.value();
+                if (pair.i >= args.length || !subcommand.equals(args[pair.i])) return false;
             }
         }
-        return true;
+        return args.length == signature.len();
     }
 
     ArgumentType getArgumentType(String input) {

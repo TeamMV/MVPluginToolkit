@@ -51,4 +51,36 @@ public class Utils {
             indexed.accept(i, list.get(i));
         }
     }
+
+    public static String colorName(int i) {
+        int idx = UtilsX.clamp(i, 0, 15);
+
+        return switch (idx) {
+            case 0 -> "black";
+            case 1 -> "dark blue";
+            case 2 -> "dark green";
+            case 3 -> "dark aqua";
+            case 4 -> "dark red";
+            case 5 -> "dark purple";
+            case 6 -> "gold";
+            case 7 -> "gray";
+            case 8 -> "dark gray";
+            case 9 -> "blue";
+            case 10 -> "green";
+            case 11 -> "aqua";
+            case 12 -> "red";
+            case 13 -> "light purple";
+            case 14 -> "yellow";
+            case 15 -> "white";
+            default -> throw new IllegalStateException("Cannot happen lmao");
+        };
+    }
+
+    public static char colorChar(int i) {
+        return "0123456789abcdef".charAt(UtilsX.clamp(i, 0, 15));
+    }
+
+    public static ChatColor chatColor(int i) {
+        return ChatColor.values()[UtilsX.clamp(i, 0, 15)];
+    }
 }

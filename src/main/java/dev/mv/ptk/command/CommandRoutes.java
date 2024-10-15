@@ -1,14 +1,13 @@
 package dev.mv.ptk.command;
 
+import dev.mv.utilsx.collection.Vec;
 import dev.mv.utilsx.generic.Either;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommandRoutes {
-    List<CommandRoute> routes;
+    Vec<CommandRoute> routes;
 
-    public CommandRoutes(List<CommandRoute> routes) {
+    public CommandRoutes(Vec<CommandRoute> routes) {
         this.routes = routes;
     }
 
@@ -20,10 +19,10 @@ public class CommandRoutes {
     }
 
     public static class Builder {
-        private List<CommandRoute> routes;
+        private Vec<CommandRoute> routes;
 
         public Builder() {
-            routes = new ArrayList<>();
+            routes = new Vec<>();
         }
 
         public RouteBuilder withRoute() {
@@ -32,25 +31,25 @@ public class CommandRoutes {
 
         public static class RouteBuilder {
             private Builder builder;
-            private List<Either<CommandRoute.ArgumentType, String>> signature;
+            private Vec<Either<CommandRoute.ArgumentType, String>> signature;
 
             private RouteBuilder(Builder builder) {
                 this.builder = builder;
-                this.signature = new ArrayList<>();
+                this.signature = new Vec<>();
             }
 
             public RouteBuilder withType(CommandRoute.ArgumentType type) {
-                this.signature.add(new Either<>(CommandRoute.ArgumentType.class, String.class).assign(type));
+                this.signature.push(new Either<>(CommandRoute.ArgumentType.class, String.class).assign(type));
                 return this;
             }
 
             public RouteBuilder withNamed(String named) {
-                this.signature.add(new Either<>(CommandRoute.ArgumentType.class, String.class).assign(named));
+                this.signature.push(new Either<>(CommandRoute.ArgumentType.class, String.class).assign(named));
                 return this;
             }
 
             public Builder then() {
-                builder.routes.add(new CommandRoute(signature));
+                builder.routes.push(new CommandRoute(signature));
                 return builder;
             }
         }
