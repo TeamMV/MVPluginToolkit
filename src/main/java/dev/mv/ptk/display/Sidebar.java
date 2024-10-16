@@ -22,11 +22,12 @@ public class Sidebar {
     }
 
     public void rebuild() {
+        int teamIdx = 0;
         for (int i = lastLine; i >= 0; i--) {
             DisplayName name = lines.get(lastLine - i);
 
-            int finalI = i;
-            name.setOnChange((s) -> updateLine(finalI, s));
+            int finalTeamIdx = teamIdx++;
+            name.setOnChange((s) -> updateLine(finalTeamIdx, s));
 
             Team team = scoreboard.registerNewTeam(i + "");
             team.addEntry(Utils.chatColor(i).toString());
@@ -37,17 +38,14 @@ public class Sidebar {
     }
 
     public void updateLine(int i, String p) {
-        if (i >= lastLine || i < 0) throw new IndexOutOfBoundsException();
         teams.get(i).setPrefix(p);
     }
 
     public void updateLine(int i) {
-        if (i >= lastLine || i < 0) throw new IndexOutOfBoundsException();
         teams.get(i).setPrefix(lines.get(lastLine - i).getAsString());
     }
 
     public void setLine(int i, DisplayName line) {
-        if (i >= lastLine || i < 0) throw new IndexOutOfBoundsException();
         line.setOnChange(s -> updateLine(i, s));
         lines.replace(lastLine - i, line).setOnChange(null);
         updateLine(i);

@@ -15,6 +15,15 @@ public class DisplayName {
     private String last;
     private Consumer<String> onChange;
 
+    public static DisplayName fromString(String name) {
+        DisplayName n = new DisplayName();
+        n.components = new ArrayList<>();
+        n.holders = new ArrayList<>();
+        n.components.add(name);
+        n.rebuild();
+        return n;
+    }
+
     public void applyTo(Entity entity) {
         holders.add(entity);
         rebuild();
