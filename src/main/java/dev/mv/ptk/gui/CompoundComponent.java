@@ -15,6 +15,13 @@ public abstract class CompoundComponent extends Component {
         component.parent = this;
         maxChildWidth = Math.max(maxChildWidth, component.getWidth());
         maxChildHeight = Math.max(maxChildHeight, component.getHeight());
+        component.setInterface(getInterface());
+    }
+
+    @Override
+    public void setInterface(InventoryInterface ii) {
+        super.setInterface(ii);
+        children.forEach(c -> c.setInterface(ii));
     }
 
     public abstract void positionChildren();

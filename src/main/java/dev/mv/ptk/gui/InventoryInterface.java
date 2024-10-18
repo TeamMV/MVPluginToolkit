@@ -3,16 +3,14 @@ package dev.mv.ptk.gui;
 import dev.mv.ptk.PluginListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-
-import java.util.List;
 
 public class InventoryInterface extends CompoundComponent {
     private Inventory inventory;
 
     public InventoryInterface(String title) {
         inventory = Bukkit.createInventory(null, 54, title);
+        inventoryInterface = this;
     }
 
     public void open(Player player) {
