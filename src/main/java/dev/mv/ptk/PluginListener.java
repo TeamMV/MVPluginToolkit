@@ -1,7 +1,7 @@
 package dev.mv.ptk;
 
 import dev.mv.ptk.gui.InventoryInterface;
-import dev.mv.ptk.utils.UseItem;
+import dev.mv.ptk.utils.input.InvClickReceiver;
 import dev.mv.utilsx.collection.Vec;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,9 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.inventory.PrepareInventoryResultEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import oshi.util.tuples.Triplet;
@@ -25,11 +23,15 @@ import java.util.function.Consumer;
 public class PluginListener implements Listener {
     public static List<InventoryInterface> INTERFACES = new ArrayList<>();
     public static List<Triplet<Inventory, InventoryInterface, Consumer<String>>> ANVILS = new ArrayList<>();
-
-    public static HashMap<Long, UseItem> USE_ITEMS = new HashMap<>();
+    public static List<InvClickReceiver> receivers = new ArrayList<>();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        receivers.forEach(r -> {
+            if (r.getInventory().equals(e.getClickedInventory())) {
+                r.acceptEvent(e);
+            }
+        });
         try {
             ANVILS.forEach(a -> {
                 if (a.getA() == e.getClickedInventory()) {
@@ -76,6 +78,18 @@ public class PluginListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
+        Vec<Integer> toRemoveInvRec = new Vec<>();
+        int icrIdx = 0;
+        for (InvClickReceiver icr : receivers) {
+            if (icr.getInventory() != null && icr.getInventory().equals(e.getInventory())) {
+                toRemoveInvRec.push(icrIdx);
+            }
+            icrIdx++;
+        }
+        toRemoveInvRec.forEach(idx -> {
+            receivers.remove(idx.intValue()).close(e);
+        });
+
         Vec<Integer> toRemoveII = new Vec<>();
 
         Utils.enumerateList(INTERFACES, (idx, i) -> {
@@ -95,18 +109,5 @@ public class PluginListener implements Listener {
         });
 
         toRemoveA.forEach(i -> ANVILS.remove(i.intValue()));
-    }
-
-    @EventHandler
-    public void onUse(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        ItemStack item = e.getItem();
-        for (UseItem i : USE_ITEMS.values()) {
-            if (i.getItem() == item.getType()) {
-                if (i.getPlayer().equals(player)) {
-                    i.onUse();
-                }
-            }
-        }
     }
 }

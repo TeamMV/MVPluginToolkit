@@ -2,6 +2,8 @@ package dev.mv.ptk.gui;
 
 import dev.mv.ptk.PluginListener;
 import dev.mv.ptk.Utils;
+import dev.mv.ptk.keyboard.SoftKeyboard;
+import dev.mv.ptk.utils.input.TextProvider;
 import dev.mv.utilsx.generic.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,12 +23,14 @@ public class ItemInput extends Component {
     private ItemStack stack;
     private String text = "text";
     private Inventory inv;
+    private TextProvider provider;
 
     private List<Listener> listeners;
 
     public ItemInput(ItemStack stack) {
         this.stack = stack;
         listeners = new ArrayList<>();
+        provider = new SoftKeyboard();
     }
 
     @Override
@@ -43,21 +47,18 @@ public class ItemInput extends Component {
     public void open(Inventory inventory) {
         inventory.setItem(slot, stack);
         this.inv = inventory;
+        ((SoftKeyboard) provider).setBackInv(getInterface());
+    }
+
+    public void setProvider(TextProvider provider) {
+        this.provider = provider;
+        provider.setCallback(this::setText);
     }
 
     @Override
     public void clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
-            Inventory anvil = Bukkit.createInventory(null, InventoryType.ANVIL, stack.getItemMeta().getDisplayName());
-            ItemStack closeButton = DisplayBuilder.build(Material.BARRIER).withTitle("<--").build();
-            anvil.setItem(0, closeButton);
-            e.getWhoClicked().openInventory(anvil);
-
-            PluginListener.ANVILS.add(new Triplet<>(anvil, getInterface(), a -> {
-                if (a != null) {
-                    setText(a, (Player) e.getWhoClicked());
-                }
-            }));
+            provider.open((Player) e.getWhoClicked());
         }
     }
 

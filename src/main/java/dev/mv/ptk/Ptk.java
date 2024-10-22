@@ -15,6 +15,7 @@ public class Ptk extends PluginToolkit {
         INSTANCE = this;
         Utils.loadClasses(this);
         Bukkit.getPluginManager().registerEvents(new PluginListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemListener(), this);
     }
 
     @Override
