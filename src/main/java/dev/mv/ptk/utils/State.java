@@ -1,7 +1,10 @@
 package dev.mv.ptk.utils;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -18,19 +21,19 @@ public class State<T> {
         return t;
     }
 
-    public void modify(Consumer<T> fn) {
+    public void modify(Player player, Consumer<T> fn) {
         fn.accept(t);
-        observers.forEach(Observer::onChange);
+        observers.forEach(o -> o.onChange(player));
     }
 
-    public void write(T t) {
+    public void write(Player player, T t) {
         this.t = t;
-        observers.forEach(Observer::onChange);
+        observers.forEach(o -> o.onChange(player));
     }
 
-    public void write(UnaryOperator<T> fn) {
+    public void write(Player player, UnaryOperator<T> fn) {
         this.t = fn.apply(t);
-        observers.forEach(Observer::onChange);
+        observers.forEach(o -> o.onChange(player));
     }
 
     public void observe(State<T>.Observer observer) {
@@ -39,15 +42,15 @@ public class State<T> {
 
     public class Observer {
         private State<T> state;
-        private Consumer<T> callback;
+        private BiConsumer<T, Player> callback;
 
-        public Observer(Consumer<T> callback) {
+        public Observer(BiConsumer<T, Player> callback) {
             this.state = State.this;
             this.callback = callback;
         }
 
-        public void onChange() {
-            callback.accept(state.read());
+        public void onChange(Player player) {
+            callback.accept(state.read(), player);
         }
     }
 }

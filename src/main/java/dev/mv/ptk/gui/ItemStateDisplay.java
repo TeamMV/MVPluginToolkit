@@ -17,7 +17,7 @@ public class ItemStateDisplay extends Component {
     public <T> ItemStateDisplay(ItemStack display, State<T> state) {
         this.display = display;
         this.state = state;
-        state.observe(state.new Observer(this::setContent));
+        state.observe(state.new Observer((v, pl) -> setContent(v)));
     }
 
     @Override

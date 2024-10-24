@@ -2,3 +2,6 @@ name: MVPtk
 version: '1.0'
 main: dev.mv.ptk.Ptk
 api-version: '1.20'
+commands:
+  sudo:
+    description: "Asks the player for the sudo password and grants them sudo access if correct"

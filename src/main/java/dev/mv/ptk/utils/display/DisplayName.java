@@ -79,7 +79,7 @@ public class DisplayName {
         }
 
         public <T> Builder<B> value(State<T> value, String colorCode) {
-            State<T>.Observer observer = value.new Observer(_0 -> supplier.get().rebuild());
+            State<T>.Observer observer = value.new Observer((_0, pl) -> supplier.get().rebuild());
             value.observe(observer);
 
             components.add(new FormattedValue<>(value, colorCode));

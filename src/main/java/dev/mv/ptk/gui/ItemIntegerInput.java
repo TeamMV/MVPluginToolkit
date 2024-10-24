@@ -35,23 +35,23 @@ public class ItemIntegerInput extends Component {
                                         .with(new VFrame()
                                                 .with(new ItemStateDisplay(new ItemStack(Material.PAPER), state))
                                                 .with(new ItemButton(plus1Head).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(v -> v + 1);
+                                                    state.write((Player) pl, v -> v + 1);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                                 .with(new ItemButton(plus5Head).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(v -> v + 5);
+                                                    state.write((Player) pl, v -> v + 5);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                                 .with(new ItemButton(zeroHead).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(0);
+                                                    state.write((Player) pl, 0);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                                 .with(new ItemButton(minus1Head).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(v -> v - 1);
+                                                    state.write((Player) pl, v -> v - 1);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                                 .with(new ItemButton(minus5Head).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(v -> v - 5);
+                                                    state.write((Player) pl, v -> v - 5);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                         )
@@ -60,11 +60,11 @@ public class ItemIntegerInput extends Component {
                                                         .withListener((_0, _1, _2, pl) -> getInterface().open((Player) pl))
                                                 )
                                                 .with(new ItemButton(mul2Head).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(v -> v * 2);
+                                                    state.write((Player) pl, v -> v * 2);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                                 .with(new ItemButton(div2Head).withListener((_0, _1, _2, pl) -> {
-                                                    state.write(v -> v / 2);
+                                                    state.write((Player) pl, v -> v / 2);
                                                     changeValue(state.read(), (Player) pl);
                                                 }))
                                         )
@@ -86,7 +86,7 @@ public class ItemIntegerInput extends Component {
     }
 
     public void changeValue(int value, Player player) {
-        state.write(value);
+        state.write(player, value);
         listeners.forEach(l -> l.onValueChange(value, player));
     }
 

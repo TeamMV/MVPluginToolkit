@@ -25,6 +25,11 @@ public class PlayerHotbar {
         }
     }
 
+    public void createNewItem(int slot, ItemStack stack) {
+        items[slot] = new HotbarItem(stack, () -> {});
+        player.getInventory().setItem(slot, items[slot].getStack());
+    }
+
     public void createNewItem(int slot, ItemStack stack, Runnable onInteract) {
         items[slot] = new HotbarItem(stack, onInteract);
         player.getInventory().setItem(slot, items[slot].getStack());

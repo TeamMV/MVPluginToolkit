@@ -17,7 +17,7 @@ public class Hotbar extends SingletonModule {
     }
 
     public PlayerHotbar get(Player player) {
-        if (hotbars.containsKey(player)) {{
+        if (!hotbars.containsKey(player)) {{
             hotbars.put(player, new PlayerHotbar(player));
         }}
         return hotbars.get(player);

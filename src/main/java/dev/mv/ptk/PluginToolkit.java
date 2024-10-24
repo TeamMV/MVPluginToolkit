@@ -2,13 +2,14 @@ package dev.mv.ptk;
 
 import dev.mv.ptk.module.Module;
 import dev.mv.ptk.module.ModuleManager;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 public abstract class PluginToolkit extends JavaPlugin {
-
     private ModuleManager modules;
+    private String sudoPassword;
 
     @Override
     public void onEnable() {
