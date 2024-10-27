@@ -3,6 +3,7 @@ package dev.mv.ptk.hotbar;
 import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Ptk;
 import dev.mv.ptk.module.SingletonModule;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -17,6 +18,10 @@ public class Hotbar extends SingletonModule {
     }
 
     public PlayerHotbar get(Player player) {
+        return hotbars.get(player);
+    }
+
+    public PlayerHotbar getOrCreate(Player player) {
         if (!hotbars.containsKey(player)) {{
             hotbars.put(player, new PlayerHotbar(player));
         }}
@@ -37,6 +42,7 @@ public class Hotbar extends SingletonModule {
     public static Hotbar getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new Hotbar(Ptk.getInstance());
+            Bukkit.getPluginManager().registerEvents(new HotbarListener(), Ptk.getInstance());
         }
         return INSTANCE;
     }

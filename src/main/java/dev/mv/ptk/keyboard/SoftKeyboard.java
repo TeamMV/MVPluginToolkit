@@ -2,7 +2,6 @@ package dev.mv.ptk.keyboard;
 
 import dev.mv.ptk.PluginListener;
 import dev.mv.ptk.gui.DisplayBuilder;
-import dev.mv.ptk.gui.InventoryInterface;
 import dev.mv.ptk.utils.HeadUtils;
 import dev.mv.ptk.utils.input.InvClickReceiver;
 import dev.mv.ptk.utils.input.TextProvider;
@@ -89,7 +88,7 @@ public class SoftKeyboard extends TextProvider implements InvClickReceiver {
             int finalI = i;
             letterCallbacks.put(slotIdx, () -> {
                 String c = String.valueOf(letters.charAt(finalI));
-                sendText(c, player);
+                addText(c, player);
             });
         }
 
@@ -113,7 +112,7 @@ public class SoftKeyboard extends TextProvider implements InvClickReceiver {
             onClose((Player) e.getWhoClicked());
             return;
         }
-        if (slot >= 38 && slot <= 41) sendText(" ", (Player) e.getWhoClicked());
+        if (slot >= 38 && slot <= 41) addText(" ", (Player) e.getWhoClicked());
         if (slot == 17) {
             removeText(1, (Player) e.getWhoClicked());
         }

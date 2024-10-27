@@ -2,13 +2,12 @@ package dev.mv.ptk.gui;
 
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.utils.State;
-import org.bukkit.Bukkit;
-import org.bukkit.enchantments.Enchantment;
+import dev.mv.utilsx.collection.Vec;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -18,13 +17,17 @@ import java.util.List;
 public class ItemToggle extends Component {
     private boolean enabled;
     private State<Boolean> state;
-    private List<Listener> listeners;
+    private Vec<Listener> listeners;
     private ItemStack stack;
+    private ItemStack displayStackOff;
+    private ItemStack displayStackOn;
     private Inventory inv;
 
     public ItemToggle(ItemStack stack) {
         this.stack = stack;
-        listeners = new ArrayList<>();
+        this.displayStackOff = DisplayBuilder.build(Material.RED_CANDLE).withTitle("&4&lDisabled").build();
+        this.displayStackOn = DisplayBuilder.build(Material.LIME_CANDLE).withTitle("&2&lEnabled").build();
+        listeners = new Vec<>();
     }
 
     @Override
@@ -34,22 +37,21 @@ public class ItemToggle extends Component {
 
     @Override
     public int getHeight() {
-        return 1;
+        return 2;
     }
 
     @Override
     public void open(Inventory inventory) {
         inventory.setItem(slot, getActualStack());
+        inventory.setItem(slot + 9, enabled ? displayStackOn : displayStackOff);
         inv = inventory;
     }
 
     private ItemStack getActualStack() {
         ItemMeta meta = stack.getItemMeta();
         if (enabled) {
-            stack.setAmount(2);
             meta.setLore(List.of(Utils.chat("&2&lEnabled")));
         } else {
-            stack.setAmount(1);
             meta.setLore(List.of(Utils.chat("&4&lDisabled")));
         }
         stack.setItemMeta(meta);
@@ -57,21 +59,23 @@ public class ItemToggle extends Component {
     }
 
     @Override
-    public void clickEvent(InventoryClickEvent e) {
-        if (e.getSlot() == slot) {
+    public boolean clickEvent(InventoryClickEvent e) {
+        if (e.getSlot() == slot || e.getSlot() == slot + 9) {
             enabled = !enabled;
+            open(inv);
             if (state != null) {
                 state.write((Player) e.getWhoClicked(), enabled);
             }
             if (inv != null) {
                 inv.setItem(slot, getActualStack());
             }
-            listeners.forEach(l -> l.toggle(slot, enabled, e.getWhoClicked()));
+            return listeners.iter().forAny(l -> l.toggle(slot, enabled, e.getWhoClicked()));
         }
+        return false;
     }
 
     public void addListener(Listener listener) {
-        listeners.add(listener);
+        listeners.push(listener);
     }
 
     public ItemToggle withListener(Listener listener) {
@@ -89,6 +93,6 @@ public class ItemToggle extends Component {
     }
 
     public interface Listener {
-        void toggle(int slot, boolean now, HumanEntity toggler);
+        boolean toggle(int slot, boolean now, HumanEntity toggler);
     }
 }

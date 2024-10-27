@@ -21,5 +21,5 @@ public abstract class Component {
 
     public abstract void open(Inventory inventory);
 
-    public abstract void clickEvent(InventoryClickEvent e);
+    public abstract boolean clickEvent(InventoryClickEvent e);
 }

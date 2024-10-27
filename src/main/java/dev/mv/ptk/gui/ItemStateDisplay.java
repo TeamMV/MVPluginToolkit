@@ -49,9 +49,10 @@ public class ItemStateDisplay extends Component {
     }
 
     @Override
-    public void clickEvent(InventoryClickEvent e) {
+    public boolean clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
             inventoryInterface.open((Player) e.getWhoClicked());
         }
+        return false;
     }
 }

@@ -3,10 +3,12 @@ package dev.mv.ptk.display;
 import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Ptk;
 import dev.mv.ptk.module.SingletonModule;
+import dev.mv.ptk.utils.Null;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 public final class Display extends SingletonModule {
     private static Display INSTANCE;
@@ -59,11 +61,11 @@ public final class Display extends SingletonModule {
     }
 
     public void removeActionbar(Player player) {
-        actionbars.remove(player).removePlayer(player);
+        Null.not(actionbars.remove(player), a -> a.removePlayer(player));
     }
 
     public void removeBossbar(Player player) {
-        bossbars.remove(player).removePlayer(player);
+        Null.not(bossbars.remove(player), a -> a.removePlayer(player));
     }
 
     public void removeSidebar(Player player) {

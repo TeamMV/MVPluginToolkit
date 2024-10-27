@@ -1,12 +1,10 @@
 package dev.mv.ptk;
 
-import dev.mv.ptk.module.Module;
 import dev.mv.ptk.module.SingletonModule;
 import dev.mv.ptk.sudo.PwListener;
 import dev.mv.ptk.sudo.SudoCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Ptk extends PluginToolkit {
     private String sudoPassword;
@@ -25,7 +23,6 @@ public class Ptk extends PluginToolkit {
 
         Utils.loadClasses(this);
         Bukkit.getPluginManager().registerEvents(new PluginListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new PwListener(), this);
 
         getCommand("sudo").setExecutor(new SudoCommand());

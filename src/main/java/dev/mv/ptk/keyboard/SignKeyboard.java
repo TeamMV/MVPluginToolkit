@@ -1,5 +1,6 @@
 package dev.mv.ptk.keyboard;
 
+import dev.mv.ptk.Ptk;
 import dev.mv.ptk.utils.input.TextProvider;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,6 +16,7 @@ import net.minecraft.server.network.ServerCommonPacketListenerImpl;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,10 +28,19 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 
 public class SignKeyboard extends TextProvider {
+    public SignKeyboard() {}
+
+    public SignKeyboard(String prompt) {
+        setDefaultPrompt(prompt);
+    }
+
     @Override
     public void open(Player player, String prompt) {
         String[] split = prompt.split("\n");
-        String[] lines = new String[] { "", "^^^^^^^^^^^^^^^", split[0], split[1]};
+        if (split.length == 1) {
+            split = new String[]{ split[0], "" };
+        }
+        String[] lines = new String[] { "", "^^^^^^^^^^^^^^^", split[0], split[1] };
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
         Location direction = player.getLocation();
@@ -71,14 +82,18 @@ public class SignKeyboard extends TextProvider {
         ChannelDuplexHandler handler = new ChannelDuplexHandler() {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                if (msg instanceof ServerboundSignUpdatePacket packet) {
-                    sendText(packet.getLines()[0], player);
-                    onClose(player);
-                    pipeline.remove(this);
-                    ClientboundBlockUpdatePacket reset = new ClientboundBlockUpdatePacket(blockPosition, CraftMagicNumbers.getBlock(block.getType(), block.getData()));
-                    serverPlayer.connection.send(reset);
-                }
                 super.channelRead(ctx, msg);
+                if (msg instanceof ServerboundSignUpdatePacket packet) {
+                    pipeline.remove(this);
+
+                    String output = packet.getLines()[0];
+                    Bukkit.getScheduler().runTask(Ptk.getInstance(), () -> {
+                        setText(output, player);
+                        onClose(player);
+                        ClientboundBlockUpdatePacket reset = new ClientboundBlockUpdatePacket(blockPosition, CraftMagicNumbers.getBlock(block.getType(), block.getData()));
+                        serverPlayer.connection.send(reset);
+                    });
+                }
             }
         };
 

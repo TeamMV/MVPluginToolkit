@@ -1,5 +1,6 @@
 package dev.mv.ptk;
 
+import dev.mv.ptk.utils.input.TextProvider;
 import dev.mv.utilsx.UtilsX;
 import dev.mv.utilsx.collection.Vec;
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -96,5 +98,10 @@ public class Utils {
             for (String criteria : progress.getAwardedCriteria())
                 progress.revokeCriteria(criteria);
         }
+    }
+
+    public static void requestInput(TextProvider textProvider, Player player, String prompt, Consumer<String> output) {
+        textProvider.setCloseCallback((s, _0) -> output.accept(s));
+        textProvider.open(player, prompt);
     }
 }

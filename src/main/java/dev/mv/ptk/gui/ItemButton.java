@@ -1,7 +1,10 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.utilsx.collection.Vec;
+import jdk.dynalink.linker.support.Lookup;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,11 +14,11 @@ import java.util.List;
 
 public class ItemButton extends Component{
     private ItemStack display;
-    private List<Listener> listeners;
+    private Vec<Listener> listeners;
 
     public ItemButton(ItemStack display) {
         this.display = display;
-        listeners = new ArrayList<>();
+        listeners = new Vec<>();
     }
 
     @Override
@@ -34,22 +37,23 @@ public class ItemButton extends Component{
     }
 
     @Override
-    public void clickEvent(InventoryClickEvent e) {
+    public boolean clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
-            listeners.forEach(l -> l.click(slot, e.isShiftClick(), e.isRightClick(), e.getWhoClicked()));
+            return listeners.iter().forAny(l -> l.click(slot, e.getClick(), e.getWhoClicked()));
         }
+        return false;
     }
 
     public interface Listener {
-        void click(int slot, boolean isShift, boolean isRight, HumanEntity clicker);
+        boolean click(int slot, ClickType type, HumanEntity clicker);
     }
 
     public void addListener(Listener listener) {
-        listeners.add(listener);
+        listeners.push(listener);
     }
 
     public ItemButton withListener(Listener listener) {
-        listeners.add(listener);
+        listeners.push(listener);
         return this;
     }
 

@@ -34,38 +34,48 @@ public class ItemIntegerInput extends Component {
                                 .with(new HFrame()
                                         .with(new VFrame()
                                                 .with(new ItemStateDisplay(new ItemStack(Material.PAPER), state))
-                                                .with(new ItemButton(plus1Head).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(plus1Head).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, v -> v + 1);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
-                                                .with(new ItemButton(plus5Head).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(plus5Head).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, v -> v + 5);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
-                                                .with(new ItemButton(zeroHead).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(zeroHead).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, 0);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
-                                                .with(new ItemButton(minus1Head).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(minus1Head).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, v -> v - 1);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
-                                                .with(new ItemButton(minus5Head).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(minus5Head).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, v -> v - 5);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
                                         )
                                         .with(new VFrame()
                                                 .with(new ItemButton(DisplayBuilder.build(Material.RED_STAINED_GLASS_PANE).withTitle("back").build())
-                                                        .withListener((_0, _1, _2, pl) -> getInterface().open((Player) pl))
+                                                        .withListener((_0, _1, pl) -> {
+                                                            getInterface().open((Player) pl);
+                                                            return false;
+                                                        })
                                                 )
-                                                .with(new ItemButton(mul2Head).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(mul2Head).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, v -> v * 2);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
-                                                .with(new ItemButton(div2Head).withListener((_0, _1, _2, pl) -> {
+                                                .with(new ItemButton(div2Head).withListener((_0, _1, pl) -> {
                                                     state.write((Player) pl, v -> v / 2);
                                                     changeValue(state.read(), (Player) pl);
+                                                    return false;
                                                 }))
                                         )
                                 )
@@ -106,10 +116,11 @@ public class ItemIntegerInput extends Component {
     }
 
     @Override
-    public void clickEvent(InventoryClickEvent e) {
+    public boolean clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
             inventoryInterface.open((Player) e.getWhoClicked());
         }
+        return false;
     }
 
     public interface Listener {

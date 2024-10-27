@@ -24,27 +24,27 @@ public class ItemInput extends Component {
     public ItemInput(ItemStack stack) {
         this.stack = stack;
         listeners = new ArrayList<>();
-        provider = new SignKeyboard();
+        setProvider(new SignKeyboard());
         prompt = "Enter text";
     }
 
     public ItemInput(ItemStack stack, TextProvider provider) {
         this.stack = stack;
-        this.provider = provider;
         listeners = new ArrayList<>();
         prompt = "Enter text";
+        setProvider(provider);
     }
 
     public ItemInput(ItemStack stack, String prompt) {
         this.stack = stack;
         this.prompt = prompt;
         listeners = new ArrayList<>();
-        provider = new SignKeyboard();
+        setProvider(new SignKeyboard());
     }
 
     public ItemInput(ItemStack stack, TextProvider provider, String prompt) {
         this.stack = stack;
-        this.provider = provider;
+        setProvider(provider);
         this.prompt = prompt;
         listeners = new ArrayList<>();
     }
@@ -63,7 +63,7 @@ public class ItemInput extends Component {
     public void open(Inventory inventory) {
         inventory.setItem(slot, stack);
         this.inv = inventory;
-        provider.setCloseCallback(getInterface()::open);
+        provider.setCloseCallback((s, pl) -> getInterface().open(pl));
     }
 
     public void setProvider(TextProvider provider) {
@@ -72,10 +72,11 @@ public class ItemInput extends Component {
     }
 
     @Override
-    public void clickEvent(InventoryClickEvent e) {
+    public boolean clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
             provider.open((Player) e.getWhoClicked(), prompt);
         }
+        return false;
     }
 
     private void setText(String text, Player player) {

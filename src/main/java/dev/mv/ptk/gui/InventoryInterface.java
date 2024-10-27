@@ -7,14 +7,22 @@ import org.bukkit.inventory.Inventory;
 
 public class InventoryInterface extends CompoundComponent {
     private Inventory inventory;
+    private int height;
 
     public InventoryInterface(String title) {
         inventory = Bukkit.createInventory(null, 54, title);
+        this.height = 6;
+        inventoryInterface = this;
+    }
+
+    public InventoryInterface(String title, int height) {
+        inventory = Bukkit.createInventory(null, 9 * height, title);
+        this.height = height;
         inventoryInterface = this;
     }
 
     public void open(Player player) {
-        PluginListener.INTERFACES.add(this);
+        PluginListener.INTERFACES.push(this);
         positionChildren();
 
         if (!children.isEmpty()) {
@@ -23,6 +31,16 @@ public class InventoryInterface extends CompoundComponent {
         }
 
         player.openInventory(inventory);
+    }
+
+    public void update(Player player) {
+        inventory.clear();
+        positionChildren();
+        if (!children.isEmpty()) {
+            Component child = children.get(0);
+            child.open(inventory);
+        }
+        player.updateInventory();
     }
 
     @Override
@@ -34,6 +52,10 @@ public class InventoryInterface extends CompoundComponent {
         }
     }
 
+    public void setTitle(String name) {
+        inventory = Bukkit.createInventory(null, height * 9, name);
+    }
+
     @Override
     public int getWidth() {
         return 9;
@@ -41,7 +63,7 @@ public class InventoryInterface extends CompoundComponent {
 
     @Override
     public int getHeight() {
-        return inventory.getSize() / 9;
+        return height;
     }
 
     public Inventory getInventory() {

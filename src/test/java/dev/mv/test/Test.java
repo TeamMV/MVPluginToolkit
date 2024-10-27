@@ -18,12 +18,6 @@ public final class Test extends PluginToolkit {
 
         ItemButton button = new ItemButton(DisplayBuilder.build(Material.NETHER_STAR).withGlint().withTitle("Main Menu").build());
 
-        button.addListener((_0, _1, isRight, p) -> {
-            if (!isRight) {
-                System.out.println("hello button");
-            }
-        });
-
         VFrame frame = new VFrame();
         frame.addComponent(button);
         border.addComponent(frame);
