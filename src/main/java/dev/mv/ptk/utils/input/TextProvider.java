@@ -17,7 +17,11 @@ public abstract class TextProvider {
     protected void sendText(String text, Player player) {
         currentStr += text;
         if (callback != null) {
-            callback.accept(currentStr, player);
+            try {
+                callback.accept(currentStr, player);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+            }
         }
         textChange(currentStr, player);
     }
@@ -25,7 +29,11 @@ public abstract class TextProvider {
     protected void removeText(int amt, Player player) {
         currentStr = currentStr.substring(0, currentStr.length() - amt);
         if (callback != null) {
-            callback.accept(currentStr, player);
+            try {
+                callback.accept(currentStr, player);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+            }
         }
         textChange(currentStr, player);
     }
@@ -36,7 +44,11 @@ public abstract class TextProvider {
 
     protected void onClose(Player player) {
         if (closeCallback != null) {
-            closeCallback.accept(player);
+            try {
+                closeCallback.accept(player);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+            }
         }
     }
 
