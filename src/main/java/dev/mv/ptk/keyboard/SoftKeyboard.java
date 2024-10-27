@@ -62,17 +62,12 @@ public class SoftKeyboard extends TextProvider implements InvClickReceiver {
     private static ItemStack deleteHead = HeadUtils.getHead(deleteUrl, "backspace");
 
     private Inventory inventory;
-    private InventoryInterface backInv;
 
     private HashMap<Integer, Runnable> letterCallbacks = new HashMap<>();
 
-    public void setBackInv(InventoryInterface backInv) {
-        this.backInv = backInv;
-    }
-
     @Override
-    public void open(Player player) {
-        inventory = Bukkit.createInventory(null, 54, "Start to type!");
+    public void open(Player player, String prompt) {
+        inventory = Bukkit.createInventory(null, 54, prompt);
         PluginListener.receivers.add(this);
         player.openInventory(inventory);
         inventory.setItem(0, DisplayBuilder.build(Material.RED_STAINED_GLASS_PANE).withTitle("Back").build());
@@ -114,8 +109,8 @@ public class SoftKeyboard extends TextProvider implements InvClickReceiver {
     public void acceptEvent(InventoryClickEvent e) {
         e.setCancelled(true);
         int slot = e.getSlot();
-        if (slot == 0) if (backInv != null) {
-            backInv.open((Player) e.getWhoClicked());
+        if (slot == 0) {
+            onClose((Player) e.getWhoClicked());
             return;
         }
         if (slot >= 38 && slot <= 41) sendText(" ", (Player) e.getWhoClicked());
@@ -136,6 +131,6 @@ public class SoftKeyboard extends TextProvider implements InvClickReceiver {
 
     @Override
     public void close(InventoryCloseEvent e) {
-
+        onClose((Player) e.getPlayer());
     }
 }

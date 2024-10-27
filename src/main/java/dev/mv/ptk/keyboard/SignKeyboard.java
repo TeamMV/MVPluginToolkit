@@ -13,11 +13,11 @@ import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerCommonPacketListenerImpl;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_20_R3.block.CraftSign;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R3.util.CraftMagicNumbers;
@@ -27,14 +27,17 @@ import java.lang.reflect.Field;
 
 public class SignKeyboard extends TextProvider {
     @Override
-    public void open(Player player) {
-        String prompt = "Hello sign\nHello prompt";
+    public void open(Player player, String prompt) {
         String[] split = prompt.split("\n");
-
         String[] lines = new String[] { "", "^^^^^^^^^^^^^^^", split[0], split[1]};
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
-        final var blockPosition = new BlockPos(player.getLocation().getBlockX(), 1, player.getLocation().getBlockZ());
+        Location direction = player.getLocation();
+        direction.setPitch(0);
+        Location location = player.getLocation().subtract(direction.getDirection().normalize());
+
+        final BlockPos blockPosition = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        Block block = player.getWorld().getBlockAt(location);
 
         ClientboundBlockUpdatePacket packet = new ClientboundBlockUpdatePacket(blockPosition, CraftMagicNumbers.getBlock(Material.OAK_SIGN, (byte) 0));
         serverPlayer.connection.send(packet);
@@ -44,10 +47,10 @@ public class SignKeyboard extends TextProvider {
         text.setHasGlowingText(false);
         text.setColor(DyeColor.BLACK);
         for (int i = 0; i < components.length; i++) {
-            text.setMessage(i, components[i]);
+            text = text.setMessage(i, components[i]);
         }
 
-        SignBlockEntity sign = new SignBlockEntity(blockPosition, Blocks.OAK_SIGN.defaultBlockState());
+        SignBlockEntity sign = new SignBlockEntity(blockPosition, CraftMagicNumbers.getBlock(Material.OAK_SIGN, (byte) 0));
         sign.setText(text, true);
         serverPlayer.connection.send(sign.getUpdatePacket());
 
@@ -69,15 +72,17 @@ public class SignKeyboard extends TextProvider {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                 if (msg instanceof ServerboundSignUpdatePacket packet) {
-                    String output = packet.getLines()[0];
-                    Bukkit.broadcastMessage(output);
+                    sendText(packet.getLines()[0], player);
+                    onClose(player);
                     pipeline.remove(this);
+                    ClientboundBlockUpdatePacket reset = new ClientboundBlockUpdatePacket(blockPosition, CraftMagicNumbers.getBlock(block.getType(), block.getData()));
+                    serverPlayer.connection.send(reset);
                 }
                 super.channelRead(ctx, msg);
             }
         };
 
-        pipeline.addBefore("sign_handler", player.getName(), handler);
+        pipeline.addBefore("packet_handler", "sign_keyboard_" + player.getName(), handler);
     }
 
     @Override

@@ -3,9 +3,11 @@ package dev.mv.ptk.utils.input;
 import org.bukkit.entity.Player;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public abstract class TextProvider {
     private BiConsumer<String, Player> callback;
+    private Consumer<Player> closeCallback;
     private String currentStr = "";
 
     public void setCallback(BiConsumer<String, Player> callback) {
@@ -28,6 +30,20 @@ public abstract class TextProvider {
         textChange(currentStr, player);
     }
 
-    public abstract void open(Player player);
+    public void setCloseCallback(Consumer<Player> closeCallback) {
+        this.closeCallback = closeCallback;
+    }
+
+    protected void onClose(Player player) {
+        if (closeCallback != null) {
+            closeCallback.accept(player);
+        }
+    }
+
+    public void open(Player player) {
+        open(player, "");
+    }
+
+    public abstract void open(Player player, String prompt);
     public abstract void textChange(String newText, Player player);
 }

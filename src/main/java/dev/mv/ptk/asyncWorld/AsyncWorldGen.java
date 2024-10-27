@@ -74,7 +74,6 @@ public class AsyncWorldGen extends SingletonModule {
     }
 
     public void generateWorld(WorldCreator creator, Consumer<World> output) {
-
         new Thread(() -> {
             WorldType type = creator.type();
             String name = creator.name();

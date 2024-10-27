@@ -14,8 +14,9 @@ import java.util.List;
 
 public class ItemInput extends Component {
     private ItemStack stack;
-    private String text = "text";
+    private String text = "";
     private Inventory inv;
+    private String prompt;
     private TextProvider provider;
 
     private List<Listener> listeners;
@@ -24,11 +25,27 @@ public class ItemInput extends Component {
         this.stack = stack;
         listeners = new ArrayList<>();
         provider = new SignKeyboard();
+        prompt = "Enter text";
     }
 
     public ItemInput(ItemStack stack, TextProvider provider) {
         this.stack = stack;
         this.provider = provider;
+        listeners = new ArrayList<>();
+        prompt = "Enter text";
+    }
+
+    public ItemInput(ItemStack stack, String prompt) {
+        this.stack = stack;
+        this.prompt = prompt;
+        listeners = new ArrayList<>();
+        provider = new SignKeyboard();
+    }
+
+    public ItemInput(ItemStack stack, TextProvider provider, String prompt) {
+        this.stack = stack;
+        this.provider = provider;
+        this.prompt = prompt;
         listeners = new ArrayList<>();
     }
 
@@ -46,7 +63,7 @@ public class ItemInput extends Component {
     public void open(Inventory inventory) {
         inventory.setItem(slot, stack);
         this.inv = inventory;
-        ((SoftKeyboard) provider).setBackInv(getInterface());
+        provider.setCloseCallback(getInterface()::open);
     }
 
     public void setProvider(TextProvider provider) {
@@ -57,7 +74,7 @@ public class ItemInput extends Component {
     @Override
     public void clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot) {
-            provider.open((Player) e.getWhoClicked());
+            provider.open((Player) e.getWhoClicked(), prompt);
         }
     }
 
@@ -67,6 +84,10 @@ public class ItemInput extends Component {
         meta.setDisplayName(text);
 
         listeners.forEach(l -> l.textChange(text, player));
+    }
+
+    public String getText() {
+        return text;
     }
 
     public ItemInput withListener(Listener listener) {
