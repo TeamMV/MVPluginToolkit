@@ -1,20 +1,13 @@
 package dev.mv.ptk.gui;
 
-import dev.mv.ptk.PluginListener;
-import dev.mv.ptk.Utils;
+import dev.mv.ptk.keyboard.SignKeyboard;
 import dev.mv.ptk.keyboard.SoftKeyboard;
 import dev.mv.ptk.utils.input.TextProvider;
-import dev.mv.utilsx.generic.Pair;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import oshi.util.tuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +23,13 @@ public class ItemInput extends Component {
     public ItemInput(ItemStack stack) {
         this.stack = stack;
         listeners = new ArrayList<>();
-        provider = new SoftKeyboard();
+        provider = new SignKeyboard();
+    }
+
+    public ItemInput(ItemStack stack, TextProvider provider) {
+        this.stack = stack;
+        this.provider = provider;
+        listeners = new ArrayList<>();
     }
 
     @Override
