@@ -5,6 +5,7 @@ import dev.mv.ptk.Utils;
 public interface Formatter {
     String format(int hours, int minutes, int seconds);
     String idle();
+    String finished();
 
     static Formatter ofColorCode(String format) {
         return new Formatter() {
@@ -16,6 +17,11 @@ public interface Formatter {
             @Override
             public String idle() {
                 return Utils.chat("%sTimer not running", format);
+            }
+
+            @Override
+            public String finished() {
+                return Utils.chat("%sTimer finished", format);
             }
         };
     }

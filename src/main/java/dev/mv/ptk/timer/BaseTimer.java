@@ -17,11 +17,15 @@ public abstract class BaseTimer {
     }
 
     public abstract void timeChanged(long remainingTotalSecs, int hours, int minutes, int seconds);
+    protected abstract void onTimerFinish();
 
     private void setupTask() {
         if (task == null) {
             task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 seconds--;
+                if (seconds <= 0) {
+                    stop();
+                }
                 timeChanged(seconds, (int) (seconds / 3600), (int) ((seconds % 3600) / 60), (int) (seconds % 60));
             }, 0, 20);
         }
@@ -51,6 +55,7 @@ public abstract class BaseTimer {
     }
 
     public void stop() {
+        onTimerFinish();
         this.isRunning = false;
         this.isDone = true;
         this.task.cancel();

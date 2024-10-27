@@ -98,7 +98,10 @@ public class CommandRoute {
 
         loop:
         for (var entry : signature) {
-            if (entry.is(String.class)) continue;
+            if (entry.is(String.class)) {
+                i++;
+                continue;
+            }
             ArgumentType type = entry.value();
             switch (type) {
                 case STRING -> {

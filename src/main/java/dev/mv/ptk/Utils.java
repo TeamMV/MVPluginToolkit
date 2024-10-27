@@ -2,12 +2,17 @@ package dev.mv.ptk;
 
 import dev.mv.utilsx.UtilsX;
 import dev.mv.utilsx.collection.Vec;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.jar.JarEntry;
@@ -82,5 +87,14 @@ public class Utils {
 
     public static ChatColor chatColor(int i) {
         return ChatColor.values()[UtilsX.clamp(i, 0, 15)];
+    }
+
+    public static void removeAdvancements(Player player) {
+        Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
+        while (iterator.hasNext()) {
+            AdvancementProgress progress = player.getAdvancementProgress(iterator.next());
+            for (String criteria : progress.getAwardedCriteria())
+                progress.revokeCriteria(criteria);
+        }
     }
 }

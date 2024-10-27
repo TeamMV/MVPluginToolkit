@@ -37,4 +37,9 @@ public class ActionbarTimer extends BaseTimer {
         String fmt = formatter.format(hours, minutes, seconds);
         actionbar.setTextContents(fmt);
     }
+
+    @Override
+    protected void onTimerFinish() {
+        actionbar.setTextContents(formatter.finished());
+    }
 }
