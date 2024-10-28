@@ -15,6 +15,14 @@ public class ItemStateDisplay extends Component {
     private Inventory inv;
 
     public <T> ItemStateDisplay(ItemStack display, State<T> state) {
+        super(null);
+        this.display = display;
+        this.state = state;
+        state.observe(state.new Observer((v, pl) -> setContent(v)));
+    }
+
+    public <T> ItemStateDisplay(Component parent, ItemStack display, State<T> state) {
+        super(parent);
         this.display = display;
         this.state = state;
         state.observe(state.new Observer((v, pl) -> setContent(v)));

@@ -24,6 +24,15 @@ public class ItemToggle extends Component {
     private Inventory inv;
 
     public ItemToggle(ItemStack stack) {
+        super(null);
+        this.stack = stack;
+        this.displayStackOff = DisplayBuilder.build(Material.RED_CANDLE).withTitle("&4&lDisabled").build();
+        this.displayStackOn = DisplayBuilder.build(Material.LIME_CANDLE).withTitle("&2&lEnabled").build();
+        listeners = new Vec<>();
+    }
+
+    public ItemToggle(Component parent, ItemStack stack) {
+        super(parent);
         this.stack = stack;
         this.displayStackOff = DisplayBuilder.build(Material.RED_CANDLE).withTitle("&4&lDisabled").build();
         this.displayStackOn = DisplayBuilder.build(Material.LIME_CANDLE).withTitle("&2&lEnabled").build();

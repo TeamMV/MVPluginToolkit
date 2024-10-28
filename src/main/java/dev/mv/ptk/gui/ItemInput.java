@@ -22,6 +22,7 @@ public class ItemInput extends Component {
     private List<Listener> listeners;
 
     public ItemInput(ItemStack stack) {
+        super(null);
         this.stack = stack;
         listeners = new ArrayList<>();
         setProvider(new SignKeyboard());
@@ -29,6 +30,7 @@ public class ItemInput extends Component {
     }
 
     public ItemInput(ItemStack stack, TextProvider provider) {
+        super(null);
         this.stack = stack;
         listeners = new ArrayList<>();
         prompt = "Enter text";
@@ -36,6 +38,7 @@ public class ItemInput extends Component {
     }
 
     public ItemInput(ItemStack stack, String prompt) {
+        super(null);
         this.stack = stack;
         this.prompt = prompt;
         listeners = new ArrayList<>();
@@ -43,6 +46,39 @@ public class ItemInput extends Component {
     }
 
     public ItemInput(ItemStack stack, TextProvider provider, String prompt) {
+        super(null);
+        this.stack = stack;
+        setProvider(provider);
+        this.prompt = prompt;
+        listeners = new ArrayList<>();
+    }
+
+    public ItemInput(Component parent, ItemStack stack) {
+        super(parent);
+        this.stack = stack;
+        listeners = new ArrayList<>();
+        setProvider(new SignKeyboard());
+        prompt = "Enter text";
+    }
+
+    public ItemInput(Component parent, ItemStack stack, TextProvider provider) {
+        super(parent);
+        this.stack = stack;
+        listeners = new ArrayList<>();
+        prompt = "Enter text";
+        setProvider(provider);
+    }
+
+    public ItemInput(Component parent, ItemStack stack, String prompt) {
+        super(parent);
+        this.stack = stack;
+        this.prompt = prompt;
+        listeners = new ArrayList<>();
+        setProvider(new SignKeyboard());
+    }
+
+    public ItemInput(Component parent, ItemStack stack, TextProvider provider, String prompt) {
+        super(parent);
         this.stack = stack;
         setProvider(provider);
         this.prompt = prompt;

@@ -25,6 +25,7 @@ public class ItemIntegerInput extends Component {
     private ItemStack display;
 
     public ItemIntegerInput(ItemStack display,  String title) {
+        super(null);
         this.display = display;
         listeners = new Vec<>();
         state = new State<>(0);

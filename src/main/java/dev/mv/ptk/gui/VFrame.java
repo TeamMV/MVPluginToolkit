@@ -1,6 +1,14 @@
 package dev.mv.ptk.gui;
 
 public class VFrame extends CompoundComponent {
+    public VFrame() {
+        super(null);
+    }
+
+    public VFrame(Component parent) {
+        super(parent);
+    }
+
     @Override
     public void positionChildren() {
         int currentSlot = slot;
@@ -10,6 +18,20 @@ public class VFrame extends CompoundComponent {
             currentSlot += c.getWidth();
             if (c instanceof CompoundComponent cc) cc.positionChildren();
         }
+    }
+
+    @Override
+    public int getContentWidth() {
+        int w = 0;
+        for (Component c : children) {
+            w += c.getWidth();
+        }
+        return w;
+    }
+
+    @Override
+    public int getContentHeight() {
+        return maxChildHeight;
     }
 
     @Override

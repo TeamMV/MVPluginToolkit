@@ -17,6 +17,13 @@ public class ItemButton extends Component{
     private Vec<Listener> listeners;
 
     public ItemButton(ItemStack display) {
+        super(null);
+        this.display = display;
+        listeners = new Vec<>();
+    }
+
+    public ItemButton(ItemStack display, Component parent) {
+        super(parent);
         this.display = display;
         listeners = new Vec<>();
     }

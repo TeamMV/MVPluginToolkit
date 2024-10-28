@@ -10,12 +10,14 @@ public class InventoryInterface extends CompoundComponent {
     private int height;
 
     public InventoryInterface(String title) {
+        super(null);
         inventory = Bukkit.createInventory(null, 54, title);
         this.height = 6;
         inventoryInterface = this;
     }
 
     public InventoryInterface(String title, int height) {
+        super(null);
         inventory = Bukkit.createInventory(null, 9 * height, title);
         this.height = height;
         inventoryInterface = this;
@@ -57,16 +59,26 @@ public class InventoryInterface extends CompoundComponent {
     }
 
     @Override
-    public int getWidth() {
+    public int getContentWidth() {
         return 9;
     }
 
     @Override
-    public int getHeight() {
+    public int getContentHeight() {
         return height;
     }
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public int getWidth() {
+        return getContentWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return getContentHeight();
     }
 }

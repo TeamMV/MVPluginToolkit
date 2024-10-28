@@ -1,9 +1,12 @@
 package dev.mv.ptk.gui;
 
 import dev.mv.utilsx.collection.Vec;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.function.Function;
 
 public abstract class CompoundComponent extends Component {
     protected Vec<Component> children = new Vec<>();
@@ -11,8 +14,16 @@ public abstract class CompoundComponent extends Component {
     private boolean locked;
     private Vec<Integer> buffer = new Vec<>();
 
+    public CompoundComponent(Component parent) {
+        super(parent);
+    }
+
     public void addComponent(Component component) {
         children.push(component);
+        applyComponent(component);
+    }
+
+    private void applyComponent(Component component) {
         component.parent = this;
         maxChildWidth = Math.max(maxChildWidth, component.getWidth());
         maxChildHeight = Math.max(maxChildHeight, component.getHeight());
@@ -41,10 +52,12 @@ public abstract class CompoundComponent extends Component {
 
     public void insertComponent(int idx, Component component) {
         children.insert(idx, component);
+        applyComponent(component);
     }
 
     public void setComponent(int idx, Component component) {
         children.replace(idx, component);
+        applyComponent(component);
     }
 
     public Component getComponent(int idx) {
@@ -73,6 +86,11 @@ public abstract class CompoundComponent extends Component {
 
     public CompoundComponent with(Component component) {
         addComponent(component);
+        return this;
+    }
+
+    public CompoundComponent with(Function<CompoundComponent, Component> onReady) {
+        addComponent(onReady.apply(this));
         return this;
     }
 

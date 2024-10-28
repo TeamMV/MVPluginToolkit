@@ -4,6 +4,15 @@ public class InsetFrame extends CompoundComponent {
     protected int top, bottom, left, right;
 
     public InsetFrame(int top, int left, int bottom, int right) {
+        super(null);
+        this.top = top;
+        this.bottom = bottom;
+        this.left = left;
+        this.right = right;
+    }
+
+    public InsetFrame(int top, int left, int bottom, int right, Component parent) {
+        super(parent);
         this.top = top;
         this.bottom = bottom;
         this.left = left;
@@ -36,14 +45,24 @@ public class InsetFrame extends CompoundComponent {
     }
 
     @Override
-    public int getWidth() {
+    public int getContentWidth() {
         if (parent == null) return 0;
-        return parent.getWidth() - left - right;
+        return parent.getContentWidth() - left - right;
+    }
+
+    @Override
+    public int getContentHeight() {
+        if (parent == null) return 0;
+        return parent.getContentHeight() - top - bottom;
+    }
+
+    @Override
+    public int getWidth() {
+        return parent.getContentWidth();
     }
 
     @Override
     public int getHeight() {
-        if (parent == null) return 0;
-        return parent.getHeight() - top - bottom;
+        return parent.getContentHeight();
     }
 }

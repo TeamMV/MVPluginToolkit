@@ -1,6 +1,5 @@
 package dev.mv.ptk.gui;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,12 +11,17 @@ public class BorderFrame extends InsetFrame {
         this.display = display;
     }
 
+    public BorderFrame(Component parent, ItemStack display) {
+        super(1, 1, 1, 1, parent);
+        this.display = display;
+    }
+
     @Override
     public void open(Inventory inventory) {
         super.open(inventory);
 
-        int width = getWidth() + 2;
-        int height = getHeight() + 2;
+        int width = getContentWidth() + 2;
+        int height = getContentHeight() + 2;
         int size = width * height;
 
         for (int i = 0; i < width; i++) {
@@ -32,7 +36,7 @@ public class BorderFrame extends InsetFrame {
     }
 
     public int map(int slot) {
-        int width = getWidth() + 2;
+        int width = getContentWidth() + 2;
         int row = slot / width;
         int col = slot % width;
         int top = this.slot / 9;

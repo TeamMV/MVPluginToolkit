@@ -8,8 +8,20 @@ public abstract class Component {
     protected Component parent;
     protected InventoryInterface inventoryInterface;
 
+    public Component(Component parent) {
+        this.parent = parent;
+    }
+
     public abstract int getWidth();
     public abstract int getHeight();
+
+    public int getContentWidth() {
+        return getWidth();
+    }
+
+    public int getContentHeight() {
+        return getHeight();
+    }
 
     public InventoryInterface getInterface() {
         return inventoryInterface;
@@ -22,4 +34,12 @@ public abstract class Component {
     public abstract void open(Inventory inventory);
 
     public abstract boolean clickEvent(InventoryClickEvent e);
+
+    public Component getParent() {
+        return parent;
+    }
+
+    public void setParent(Component parent) {
+        this.parent = parent;
+    }
 }
