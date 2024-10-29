@@ -1,5 +1,6 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
 import dev.mv.ptk.utils.State;
 import dev.mv.utilsx.UtilsX;
 import org.bukkit.Bukkit;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ItemStateDisplay extends Component {
+public class ItemStateDisplay extends Component1x1 {
     private ItemStack display;
     private State<?> state;
     private Inventory inv;
@@ -28,16 +29,6 @@ public class ItemStateDisplay extends Component {
         state.observe(state.new Observer((v, pl) -> setContent(v)));
     }
 
-    @Override
-    public int getWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
-    }
-
     public void setContent(Object obj) {
         ItemMeta meta = display.getItemMeta();
         meta.setDisplayName(obj.toString());
@@ -50,7 +41,7 @@ public class ItemStateDisplay extends Component {
     }
 
     @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         inventory.setItem(slot, display);
         this.inv = inventory;
         setContent(state.read());
@@ -58,9 +49,6 @@ public class ItemStateDisplay extends Component {
 
     @Override
     public boolean clickEvent(InventoryClickEvent e) {
-        if (e.getSlot() == slot) {
-            inventoryInterface.open((Player) e.getWhoClicked());
-        }
         return false;
     }
 }

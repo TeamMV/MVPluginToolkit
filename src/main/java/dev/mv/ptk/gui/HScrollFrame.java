@@ -1,6 +1,6 @@
 package dev.mv.ptk.gui;
 
-import org.bukkit.Bukkit;
+import dev.mv.ptk.style.UiStyle;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +12,15 @@ public class HScrollFrame extends CompoundComponent {
 
     public HScrollFrame(Component parent) {
         super(parent);
+    }
+
+    public HScrollFrame(Component parent, int startingOffset) {
+        super(parent);
+        this.scrollOffset = startingOffset;
+    }
+
+    public int getOffset() {
+        return scrollOffset;
     }
 
     private void onScrolled(Player player) {
@@ -26,7 +35,7 @@ public class HScrollFrame extends CompoundComponent {
 
     public void scrollDown(int amt, Player player) {
         scrollOffset += amt;
-        if (scrollOffset >= overlap) scrollOffset -= amt;
+        if (scrollOffset >= overlap) scrollOffset = overlap;
         onScrolled(player);
     }
 
@@ -35,7 +44,7 @@ public class HScrollFrame extends CompoundComponent {
     }
 
     @Override
-    public void positionChildren() {
+    public void positionChildren(UiStyle style) {
         int currentSlot = slot;
 
         for (Component c : children) {
@@ -43,7 +52,7 @@ public class HScrollFrame extends CompoundComponent {
             if (mapped > slot + getContentHeight() * 9) break;
             c.slot = mapped;
             currentSlot += 9 * c.getHeight();
-            if (c instanceof CompoundComponent cc) cc.positionChildren();
+            if (c instanceof CompoundComponent cc) cc.positionChildren(style);
         }
     }
 
@@ -58,7 +67,7 @@ public class HScrollFrame extends CompoundComponent {
     }
 
     @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         overlap = 0;
         for (Component c : children) {
             overlap += c.getHeight();
@@ -67,15 +76,15 @@ public class HScrollFrame extends CompoundComponent {
         if (overlap < 0) overlap = 0;
 
         children.forEach(c -> {
-            c.open(inventory);
+            c.open(inventory, style);
         });
 
         for (int i = 0; i < getContentHeight(); i++) {
             int s = slot + i * 9 + getContentWidth();
-            inventory.setItem(s, DisplayBuilder.build(Material.GRAY_STAINED_GLASS_PANE).withTitle("&7").build());
+            inventory.setItem(s, DisplayBuilder.build(style.getBorder()).withTitle("&7").build());
         }
-        inventory.setItem(slot + getContentWidth(), DisplayBuilder.build(Material.ARROW).withTitle("&6Scroll up").build());
-        inventory.setItem(slot + getContentWidth() + 9 * getContentHeight() - 9, DisplayBuilder.build(Material.ARROW).withTitle("&6Scroll down").build());
+        if (scrollOffset > 0) inventory.setItem(slot + getContentWidth(), DisplayBuilder.build(style.getArrowButton()).withTitle("&fScroll up").build());
+        if (scrollOffset < overlap) inventory.setItem(slot + getContentWidth() + 9 * getContentHeight() - 9, DisplayBuilder.build(style.getArrowButton()).withTitle("&fScroll down").build());
     }
 
     @Override

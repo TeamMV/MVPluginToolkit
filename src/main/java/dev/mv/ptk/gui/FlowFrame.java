@@ -1,5 +1,6 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
@@ -54,16 +55,16 @@ public class FlowFrame extends HFrame {
     }
 
     @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         children.forEach(c -> {
             if (c.slot >= slot && c.slot >= 0 && c.slot < inventory.getSize()) {
-                c.open(inventory);
+                c.open(inventory, style);
             }
         });
     }
 
     @Override
-    public void positionChildren() {
+    public void positionChildren(UiStyle style) {
         int currentSlot = slot;
         int walked = 0;
         int rowHeight = 0;
@@ -80,6 +81,9 @@ public class FlowFrame extends HFrame {
             }
 
             c.slot = currentSlot;
+
+            if (c instanceof CompoundComponent cc) cc.positionChildren(style);
+
             currentSlot += c.getWidth();
             walked += c.getWidth();
         }

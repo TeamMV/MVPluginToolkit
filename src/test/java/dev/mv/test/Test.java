@@ -2,12 +2,11 @@ package dev.mv.test;
 
 import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.gui.*;
+import dev.mv.ptk.gui.border.BorderFrame;
 import dev.mv.ptk.utils.State;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
 
 public final class Test extends PluginToolkit {
 

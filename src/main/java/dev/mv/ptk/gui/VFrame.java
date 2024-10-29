@@ -1,5 +1,7 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
+
 public class VFrame extends CompoundComponent {
     public VFrame() {
         super(null);
@@ -10,13 +12,13 @@ public class VFrame extends CompoundComponent {
     }
 
     @Override
-    public void positionChildren() {
+    public void positionChildren(UiStyle style) {
         int currentSlot = slot;
 
         for (Component c : children) {
             c.slot = currentSlot;
             currentSlot += c.getWidth();
-            if (c instanceof CompoundComponent cc) cc.positionChildren();
+            if (c instanceof CompoundComponent cc) cc.positionChildren(style);
         }
     }
 

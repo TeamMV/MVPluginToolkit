@@ -1,10 +1,11 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 public abstract class Component {
-    protected int slot;
+    public int slot;
     protected Component parent;
     protected InventoryInterface inventoryInterface;
 
@@ -31,7 +32,7 @@ public abstract class Component {
         inventoryInterface = ii;
     }
 
-    public abstract void open(Inventory inventory);
+    public abstract void open(Inventory inventory, UiStyle style);
 
     public abstract boolean clickEvent(InventoryClickEvent e);
 

@@ -1,5 +1,6 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
 import dev.mv.utilsx.collection.Vec;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -74,12 +75,12 @@ public abstract class CompoundComponent extends Component {
         buffer.drain().forEach(this::removeComponent);
     }
 
-    public abstract void positionChildren();
+    public abstract void positionChildren(UiStyle style);
 
     @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         locked = true;
-        children.forEach(c -> c.open(inventory));
+        children.forEach(c -> c.open(inventory, style));
         locked = false;
         buffer.drain().forEach(this::removeComponent);
     }

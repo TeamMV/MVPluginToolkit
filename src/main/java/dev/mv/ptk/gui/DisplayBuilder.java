@@ -3,6 +3,7 @@ package dev.mv.ptk.gui;
 import dev.mv.ptk.Utils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -27,7 +28,7 @@ public class DisplayBuilder {
     }
 
     public DisplayBuilder withGlint() {
-        meta.addEnchant(Enchantment.PROTECTION_FALL, 10, false);
+        meta.addEnchant(Enchantment.PROTECTION_FALL, 10, true);
         return this;
     }
 
@@ -38,6 +39,11 @@ public class DisplayBuilder {
 
     public DisplayBuilder withTitle(String unformattedTitle, Object... args) {
         meta.setDisplayName(Utils.chat(unformattedTitle, args));
+        return this;
+    }
+
+    public DisplayBuilder withFlag(ItemFlag flag) {
+        meta.addItemFlags(flag);
         return this;
     }
 

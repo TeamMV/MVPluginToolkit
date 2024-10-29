@@ -1,5 +1,6 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
 import dev.mv.utilsx.collection.Vec;
 import jdk.dynalink.linker.support.Lookup;
 import org.bukkit.entity.HumanEntity;
@@ -12,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemButton extends Component{
+public class ItemButton extends Component1x1 {
     private ItemStack display;
     private Vec<Listener> listeners;
 
@@ -28,18 +29,12 @@ public class ItemButton extends Component{
         listeners = new Vec<>();
     }
 
-    @Override
-    public int getWidth() {
-        return 1;
+    public void setDisplay(ItemStack display) {
+        this.display = display;
     }
 
     @Override
-    public int getHeight() {
-        return 1;
-    }
-
-    @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         inventory.setItem(slot, display);
     }
 

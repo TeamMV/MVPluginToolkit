@@ -1,6 +1,8 @@
 package dev.mv.ptk.gui;
 
 import dev.mv.ptk.PluginListener;
+import dev.mv.ptk.style.Style;
+import dev.mv.ptk.style.UiStyle;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -24,33 +26,35 @@ public class InventoryInterface extends CompoundComponent {
     }
 
     public void open(Player player) {
+        UiStyle style = Style.getInstance().getStyle(player.getUniqueId());
         PluginListener.INTERFACES.push(this);
-        positionChildren();
+        positionChildren(style);
 
         if (!children.isEmpty()) {
             Component child = children.get(0);
-            child.open(inventory);
+            child.open(inventory, style);
         }
 
         player.openInventory(inventory);
     }
 
     public void update(Player player) {
+        UiStyle style = Style.getInstance().getStyle(player.getUniqueId());
         inventory.clear();
-        positionChildren();
+        positionChildren(style);
         if (!children.isEmpty()) {
             Component child = children.get(0);
-            child.open(inventory);
+            child.open(inventory, style);
         }
         player.updateInventory();
     }
 
     @Override
-    public void positionChildren() {
+    public void positionChildren(UiStyle style) {
         if (!children.isEmpty()) {
             Component child = children.get(0);
             child.slot = 0;
-            if (child instanceof CompoundComponent cc) cc.positionChildren();
+            if (child instanceof CompoundComponent cc) cc.positionChildren(style);
         }
     }
 

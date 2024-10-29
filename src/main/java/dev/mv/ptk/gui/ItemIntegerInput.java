@@ -1,5 +1,7 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.gui.border.BorderFrame;
+import dev.mv.ptk.style.UiStyle;
 import dev.mv.ptk.utils.HeadUtils;
 import dev.mv.ptk.utils.State;
 import dev.mv.utilsx.collection.Vec;
@@ -9,7 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemIntegerInput extends Component {
+public class ItemIntegerInput extends Component1x1 {
     private static ItemStack plus1Head = HeadUtils.getHead("http://textures.minecraft.net/texture/177bb66fc73a97cefcb3a4bfdccb12281f44dd326ccd0ff39d47e985bfeff343", "+1", 1);
     private static ItemStack plus5Head = HeadUtils.getHead("http://textures.minecraft.net/texture/177bb66fc73a97cefcb3a4bfdccb12281f44dd326ccd0ff39d47e985bfeff343", "+5", 5);
     private static ItemStack minus1Head = HeadUtils.getHead("http://textures.minecraft.net/texture/14c48a661a524b01427fd1c34ae07076c570a0711f0ab703737501af37231631", "-1", 1);
@@ -102,17 +104,7 @@ public class ItemIntegerInput extends Component {
     }
 
     @Override
-    public int getWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
-    }
-
-    @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         inventory.setItem(slot, display);
     }
 

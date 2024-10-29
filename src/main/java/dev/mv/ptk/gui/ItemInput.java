@@ -1,8 +1,11 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.Ptk;
 import dev.mv.ptk.keyboard.SignKeyboard;
 import dev.mv.ptk.keyboard.SoftKeyboard;
+import dev.mv.ptk.style.UiStyle;
 import dev.mv.ptk.utils.input.TextProvider;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -12,10 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemInput extends Component {
+public class ItemInput extends Component1x1 {
     private ItemStack stack;
     private String text = "";
-    private Inventory inv;
     private String prompt;
     private TextProvider provider;
 
@@ -86,20 +88,12 @@ public class ItemInput extends Component {
     }
 
     @Override
-    public int getWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
-    }
-
-    @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         inventory.setItem(slot, stack);
-        this.inv = inventory;
-        provider.setCloseCallback((s, pl) -> getInterface().open(pl));
+        provider.setCloseCallback((s, pl) -> {
+            pl.closeInventory();
+            inventoryInterface.open(pl);
+        });
     }
 
     public void setProvider(TextProvider provider) {

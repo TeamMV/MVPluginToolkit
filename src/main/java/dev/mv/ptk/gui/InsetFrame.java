@@ -1,5 +1,7 @@
 package dev.mv.ptk.gui;
 
+import dev.mv.ptk.style.UiStyle;
+
 public class InsetFrame extends CompoundComponent {
     protected int top, bottom, left, right;
 
@@ -36,11 +38,11 @@ public class InsetFrame extends CompoundComponent {
     }
 
     @Override
-    public void positionChildren() {
+    public void positionChildren(UiStyle style) {
         if (!children.isEmpty()) {
             Component component = children.get(0);
             component.slot = slot + left + 9 * top;
-            if (component instanceof CompoundComponent cc) cc.positionChildren();
+            if (component instanceof CompoundComponent cc) cc.positionChildren(style);
         }
     }
 

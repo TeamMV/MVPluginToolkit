@@ -45,7 +45,7 @@ public class SignKeyboard extends TextProvider {
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
         Location direction = player.getLocation();
         direction.setPitch(0);
-        Location location = player.getLocation().subtract(direction.getDirection().normalize());
+        Location location = player.getLocation().subtract(direction.getDirection().normalize().multiply(3.0));
 
         final BlockPos blockPosition = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         Block block = player.getWorld().getBlockAt(location);

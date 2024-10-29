@@ -1,6 +1,8 @@
 package dev.mv.ptk.gui;
 
 import dev.mv.ptk.Utils;
+import dev.mv.ptk.style.Style;
+import dev.mv.ptk.style.UiStyle;
 import dev.mv.ptk.utils.State;
 import dev.mv.utilsx.collection.Vec;
 import org.bukkit.Material;
@@ -19,23 +21,17 @@ public class ItemToggle extends Component {
     private State<Boolean> state;
     private Vec<Listener> listeners;
     private ItemStack stack;
-    private ItemStack displayStackOff;
-    private ItemStack displayStackOn;
     private Inventory inv;
 
     public ItemToggle(ItemStack stack) {
         super(null);
         this.stack = stack;
-        this.displayStackOff = DisplayBuilder.build(Material.RED_CANDLE).withTitle("&4&lDisabled").build();
-        this.displayStackOn = DisplayBuilder.build(Material.LIME_CANDLE).withTitle("&2&lEnabled").build();
         listeners = new Vec<>();
     }
 
     public ItemToggle(Component parent, ItemStack stack) {
         super(parent);
         this.stack = stack;
-        this.displayStackOff = DisplayBuilder.build(Material.RED_CANDLE).withTitle("&4&lDisabled").build();
-        this.displayStackOn = DisplayBuilder.build(Material.LIME_CANDLE).withTitle("&2&lEnabled").build();
         listeners = new Vec<>();
     }
 
@@ -50,20 +46,16 @@ public class ItemToggle extends Component {
     }
 
     @Override
-    public void open(Inventory inventory) {
+    public void open(Inventory inventory, UiStyle style) {
         inventory.setItem(slot, getActualStack());
-        inventory.setItem(slot + 9, enabled ? displayStackOn : displayStackOff);
+        inventory.setItem(slot + 9, enabled ?
+                style.getEnabled() :
+                style.getDisabled()
+        );
         inv = inventory;
     }
 
     private ItemStack getActualStack() {
-        ItemMeta meta = stack.getItemMeta();
-        if (enabled) {
-            meta.setLore(List.of(Utils.chat("&2&lEnabled")));
-        } else {
-            meta.setLore(List.of(Utils.chat("&4&lDisabled")));
-        }
-        stack.setItemMeta(meta);
         return stack;
     }
 
@@ -71,7 +63,7 @@ public class ItemToggle extends Component {
     public boolean clickEvent(InventoryClickEvent e) {
         if (e.getSlot() == slot || e.getSlot() == slot + 9) {
             enabled = !enabled;
-            open(inv);
+            open(inv, Style.getInstance().getStyle(e.getWhoClicked().getUniqueId()));
             if (state != null) {
                 state.write((Player) e.getWhoClicked(), enabled);
             }

@@ -1,6 +1,7 @@
 package dev.mv.ptk;
 
 import dev.mv.ptk.module.SingletonModule;
+import dev.mv.ptk.style.StyleCommand;
 import dev.mv.ptk.sudo.PwListener;
 import dev.mv.ptk.sudo.SudoCommand;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public class Ptk extends PluginToolkit {
         Bukkit.getPluginManager().registerEvents(new PwListener(), this);
 
         getCommand("sudo").setExecutor(new SudoCommand());
+        getCommand("style").setExecutor(new StyleCommand());
     }
 
     @Override

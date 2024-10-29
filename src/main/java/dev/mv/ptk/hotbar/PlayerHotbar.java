@@ -143,7 +143,7 @@ public class PlayerHotbar {
             }
             return;
         }
-        if (e.getSlot() > 8) return;
+        if (e.getSlot() > 8 || e.getSlot() < 0) return;
         if (locked[e.getSlot()]) {
             e.setCancelled(true);
         }
