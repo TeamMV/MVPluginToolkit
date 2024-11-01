@@ -24,6 +24,8 @@ public class Utils {
     public static final Vec<Class<?>> CLASSES = new Vec<>();
     public static final HashMap<String, Vec<Class<?>>> PLUGIN_CLASSES = new HashMap<>();
 
+    private static final Vec<Consumer<Vec<Class<?>>>> LISTENERS = new Vec<>();
+
     public static void loadClasses(PluginToolkit ptk) {
         try {
             File plugin = ptk.getJarFile();
@@ -44,9 +46,21 @@ public class Utils {
                     }
                 } catch (Exception ignore) {}
             }
+            for (Consumer<Vec<Class<?>>> listener : LISTENERS) {
+                listener.accept(classes);
+            }
             PLUGIN_CLASSES.put(ptk.getName(), classes);
             CLASSES.append(classes);
         } catch (Exception ignore) {}
+    }
+
+    public static void registerListener(Consumer<Vec<Class<?>>> listener) {
+        listener.accept(CLASSES);
+        LISTENERS.push(listener);
+    }
+
+    public static void removeListener(Consumer<Vec<Class<?>>> listener) {
+        LISTENERS.remove(listener);
     }
 
     public static String chat(String msg, Object... args) {
