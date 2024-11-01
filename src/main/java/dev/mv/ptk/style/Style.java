@@ -19,7 +19,7 @@ public class Style extends SingletonModule {
 
     private HashMap<UUID, UiStyle> styles = new HashMap<>();
 
-    public Style(PluginToolkit toolkit) {
+    private Style(PluginToolkit toolkit) {
         super(toolkit);
         toolkit.saveDefaultConfig();
         FileConfiguration config = toolkit.getConfig();

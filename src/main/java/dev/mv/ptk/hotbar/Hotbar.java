@@ -12,7 +12,7 @@ public class Hotbar extends SingletonModule {
     private static Hotbar INSTANCE;
     private HashMap<Player, PlayerHotbar> hotbars;
 
-    protected Hotbar(PluginToolkit toolkit) {
+    private Hotbar(PluginToolkit toolkit) {
         super(toolkit);
         hotbars = new HashMap<>();
     }

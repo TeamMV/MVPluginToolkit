@@ -16,7 +16,7 @@ public class Sudo extends SingletonModule {
 
     private HashSet<Player> sudoers;
 
-    protected Sudo(PluginToolkit toolkit) {
+    private Sudo(PluginToolkit toolkit) {
         super(toolkit);
         sudoers = new HashSet<>();
     }

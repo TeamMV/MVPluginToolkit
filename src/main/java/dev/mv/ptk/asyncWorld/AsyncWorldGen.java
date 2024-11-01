@@ -29,7 +29,7 @@ public class AsyncWorldGen extends SingletonModule {
     private final File amplifiedTemplate;
     private final File largeBiomesTemplate;
 
-    public AsyncWorldGen(PluginToolkit toolkit) {
+    private AsyncWorldGen(PluginToolkit toolkit) {
         super(toolkit);
 
         Path worldDir = toolkit.getDataFolder().toPath().toAbsolutePath().getParent().getParent();
