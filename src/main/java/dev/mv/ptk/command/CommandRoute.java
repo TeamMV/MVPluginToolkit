@@ -4,12 +4,15 @@ import dev.mv.utilsx.collection.Vec;
 import dev.mv.utilsx.generic.Either;
 import dev.mv.utilsx.generic.Option;
 import dev.mv.utilsx.generic.Pair;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 public class CommandRoute {
     Vec<Either<ArgumentType, String>> signature;
+    Vec<Option<Function<Player, Vec<String>>>> tabCompleters;
 
     public enum ArgumentType {
         STRING,
@@ -19,8 +22,9 @@ public class CommandRoute {
         EXTRA, // optional LAST parameter in array, if included, String[] args is included at the end of function signature
     }
 
-    CommandRoute(Vec<Either<ArgumentType, String>> signature) {
+    CommandRoute(Vec<Either<ArgumentType, String>> signature, Vec<Option<Function<Player, Vec<String>>>> tabCompleters) {
         this.signature = signature;
+        this.tabCompleters = tabCompleters;
     }
 
     boolean isCompatible(String[] args) {
@@ -41,6 +45,28 @@ public class CommandRoute {
             }
         }
         return args.length == signature.len();
+    }
+
+    boolean isPartial(String[] args) {
+        int checkLen = args.length - 1;
+        if (checkLen == 0) return signature.len() > 0;
+        for (int i = 0; i < checkLen; i++) {
+            var pair = signature.get(i);
+            if (pair.is(ArgumentType.class)) {
+                ArgumentType type = pair.value();
+                if (type == ArgumentType.EXTRA || type == ArgumentType.OPTIONAL) return true;
+                ArgumentType provided = getArgumentType(args[i]);
+                if (type != provided) {
+                    if (type == ArgumentType.FLOAT && provided == ArgumentType.INTEGER) continue;
+                    return false;
+                };
+            }
+            else {
+                String subcommand = pair.value();
+                if (!subcommand.equals(args[i])) return false;
+            }
+        }
+        return checkLen < signature.len();
     }
 
     ArgumentType getArgumentType(String input) {
@@ -139,5 +165,17 @@ public class CommandRoute {
         }
 
         return params.toArray();
+    }
+
+    Vec<String> tabComplete(Player player, String[] args) {
+        if (signature.len() < args.length) {
+            return new Vec<>();
+        }
+        String lastArg = args[args.length - 1];
+        Option<Function<Player, Vec<String>>> tabCompleter = tabCompleters.get(args.length - 1);
+        if (tabCompleter == null || tabCompleter.isNone()) {
+            return new Vec<>();
+        }
+        return tabCompleter.get().apply(player).iter().filter(s -> StringUtils.startsWithIgnoreCase(s, lastArg)).collect();
     }
 }
