@@ -168,7 +168,7 @@ public class CommandRoute {
     }
 
     Vec<String> tabComplete(Player player, String[] args) {
-        if (signature.len() < args.length) {
+        if (tabCompleters.len() < args.length) {
             return new Vec<>();
         }
         String lastArg = args[args.length - 1];

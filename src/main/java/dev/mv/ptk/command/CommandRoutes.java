@@ -54,7 +54,7 @@ public class CommandRoutes {
 
             public RouteBuilder withType(CommandRoute.ArgumentType type) {
                 this.signature.push(new Either<>(CommandRoute.ArgumentType.class, String.class).assign(type));
-                this.tabCompleters.push(Option.none());
+                if (type != CommandRoute.ArgumentType.OPTIONAL) this.tabCompleters.push(Option.none());
                 return this;
             }
 

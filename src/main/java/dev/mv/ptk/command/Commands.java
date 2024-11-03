@@ -22,6 +22,7 @@ public final class Commands extends Module {
                 try {
                     var executor = (AbstractCommand) clazz.getConstructor().newInstance();
                     toolkit.getCommand(command.value()).setExecutor(executor);
+                    toolkit.getCommand(command.value()).setTabCompleter(executor);
                     commands.put(command.value(), executor);
                 } catch (NullPointerException e) {
                     System.err.println("Command " + command.value() + " is not registered in plugin.yml");
@@ -40,6 +41,7 @@ public final class Commands extends Module {
     public void disable() {
         for (String command : commands.keySet()) {
             toolkit.getCommand(command).setExecutor(null);
+            toolkit.getCommand(command).setTabCompleter(null);
         }
     }
 
