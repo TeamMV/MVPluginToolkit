@@ -87,4 +87,43 @@ public class ModernStyle extends UiStyle {
                 .build();
     }
 
+    @Override
+    public String getErrorFormat() {
+        return "&c";
+    }
+
+    @Override
+    public String getDefaultFormat() {
+        return "&7";
+    }
+
+    @Override
+    public String getDebugFormat() {
+        return "&8";
+    }
+
+    @Override
+    public String getPrimarySystemFormat() {
+        return "&e";
+    }
+
+    @Override
+    public String getSecondarySystemFormat() {
+        return "&f";
+    }
+
+    @Override
+    public String getNumericHighlightFormat() {
+        return "&a";
+    }
+
+    @Override
+    public String getAlphabeticHighlightFormat() {
+        return "&b";
+    }
+
+    @Override
+    public String getSeparatorFormat() {
+        return "&9&l";
+    }
 }

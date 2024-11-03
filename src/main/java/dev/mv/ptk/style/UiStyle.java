@@ -21,4 +21,13 @@ public abstract class UiStyle {
     public abstract Option<Pair<BorderToolbar.Border, Integer>> getCloseButtonPosition();
     public abstract ItemStack getEnabled();
     public abstract ItemStack getDisabled();
+
+    public abstract String getErrorFormat();
+    public abstract String getDefaultFormat();
+    public abstract String getDebugFormat();
+    public abstract String getPrimarySystemFormat();
+    public abstract String getSecondarySystemFormat();
+    public abstract String getNumericHighlightFormat();
+    public abstract String getAlphabeticHighlightFormat();
+    public abstract String getSeparatorFormat();
 }
