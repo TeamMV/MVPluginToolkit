@@ -6,7 +6,7 @@ public abstract class Module {
 
     protected PluginToolkit toolkit;
 
-    protected Module(PluginToolkit toolkit) {
+    public Module(PluginToolkit toolkit) {
         this.toolkit = toolkit;
     }
     

@@ -1,0 +1,8 @@
+e => error
+d => default
+D => debug
+p => primary
+s => secondary
+n => numeric
+a => alphabetic
+S => separator

@@ -9,30 +9,31 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-public class ModernStyle extends UiStyle {
+public class CustomUiStyle extends UiStyle {
+
     @Override
     public ItemStack getStyleDisplayItem() {
         return DisplayBuilder
-                .build(Material.QUARTZ_BLOCK)
-                .withTitle("&b&lModern")
-                .withLore("&7Author: &amqxf")
+                .build(Material.DIAMOND)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&b&lCustom Style")
+                .withLore("&7A custom style for the UI\n&7Enhanced visuals and icons\n&7Author: &aChatGPT 3.5")
                 .build();
     }
 
     @Override
     public String getStyleName() {
-        return "modern";
+        return "&bCustom UI Style";
     }
 
     @Override
     public Material getAddButton() {
-        return Material.SUNFLOWER;
+        return Material.GREEN_CONCRETE;
     }
 
     @Override
     public Material getMenuButton() {
-        return Material.NETHER_STAR;
+        return Material.BOOK;
     }
 
     @Override
@@ -42,48 +43,56 @@ public class ModernStyle extends UiStyle {
 
     @Override
     public Material getBorder() {
-        return Material.GRAY_STAINED_GLASS_PANE;
+        return Material.BLUE_STAINED_GLASS_PANE;
     }
 
     @Override
     public ItemStack getBackButton() {
-        return DisplayBuilder.build(Material.ARROW)
-                .withTitle("&fBack")
+        return DisplayBuilder
+                .build(Material.REDSTONE_TORCH)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&cBack")
+                .withLore("&7Return to the previous menu")
                 .build();
     }
 
     @Override
     public Pair<BorderToolbar.Border, Integer> getBackButtonPosition() {
-        return new Pair<>(BorderToolbar.Border.BOTTOM, 3);
+        return new Pair<>(BorderToolbar.Border.BOTTOM, 0); // Position at the bottom-left corner
     }
 
     @Override
     public Option<ItemStack> getCloseButton() {
-        return Option.some(DisplayBuilder.build(Material.BARRIER)
-                .withTitle("&cClose")
+        return Option.some(DisplayBuilder
+                .build(Material.BARRIER)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&cClose")
+                .withLore("&7Close this menu")
                 .build());
     }
 
     @Override
     public Option<Pair<BorderToolbar.Border, Integer>> getCloseButtonPosition() {
-        return Option.some(new Pair<>(BorderToolbar.Border.BOTTOM, 4));
+        return Option.some(new Pair<>(BorderToolbar.Border.BOTTOM, 8)); // Position at the bottom-right corner
     }
 
     @Override
     public ItemStack getEnabled() {
-        return DisplayBuilder.build(Material.LIME_DYE)
-                .withTitle("&aEnabled")
+        return DisplayBuilder
+                .build(Material.LIME_DYE)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&aEnabled")
+                .withLore("&7This option is enabled")
                 .build();
     }
 
     @Override
     public ItemStack getDisabled() {
-        return DisplayBuilder.build(Material.GRAY_DYE)
-                .withTitle("&7Disabled")
+        return DisplayBuilder
+                .build(Material.GRAY_DYE)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&7Disabled")
+                .withLore("&7This option is disabled")
                 .build();
     }
 
@@ -99,7 +108,7 @@ public class ModernStyle extends UiStyle {
 
     @Override
     public String getDebugFormat() {
-        return "&8";
+        return "&b";
     }
 
     @Override
@@ -114,17 +123,17 @@ public class ModernStyle extends UiStyle {
 
     @Override
     public String getNumericHighlightFormat() {
-        return "&a";
+        return "&6";
     }
 
     @Override
     public String getAlphabeticHighlightFormat() {
-        return "&b";
+        return "&d";
     }
 
     @Override
     public String getSeparatorFormat() {
-        return "&9";
+        return "&8";
     }
 
     @Override
@@ -137,3 +146,4 @@ public class ModernStyle extends UiStyle {
         return "&c";
     }
 }
+

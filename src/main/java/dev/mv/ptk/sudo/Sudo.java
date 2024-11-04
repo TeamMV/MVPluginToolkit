@@ -4,6 +4,7 @@ import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Ptk;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.module.SingletonModule;
+import dev.mv.ptk.style.Chat;
 import dev.mv.utilsx.collection.Vec;
 import dev.mv.utilsx.generic.Pair;
 import org.bukkit.Bukkit;
@@ -28,19 +29,19 @@ public class Sudo extends SingletonModule {
 
     public void requestSudoAccess(Player player) {
         if (sudoers.contains(player)) {
-            player.sendMessage(Utils.chat("&2Access granted"));
+            Chat.send(player, "&+pAccess granted!");
         } else {
-            player.sendMessage(Utils.chat("&4Please type passwort:"));
+            Chat.send(player, "&+pPlease type passwort:");
             PwListener.REQUESTS.put(player, new Pair<>(Ptk.getInstance().getSudoPass(), new PwListener.Callback() {
                 @Override
                 public void onCorrect() {
                     sudoers.add(player);
-                    player.sendMessage(Utils.chat("&2Access granted"));
+                    Chat.send(player, "&+pAccess granted!");
                 }
 
                 @Override
                 public void onIncorrect() {
-                    player.sendMessage(Utils.chat("&4Incorrect password"));
+                    Chat.send(player, "&+eIncorrect Password");
                 }
             }));
         }

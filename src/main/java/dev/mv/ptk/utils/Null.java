@@ -1,5 +1,7 @@
 package dev.mv.ptk.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -8,6 +10,10 @@ public class Null {
         if (nullable != null) {
             func.accept(nullable);
         }
+    }
+
+    public static <T> T or(T nullable, @NotNull T def) {
+        return nullable == null ? def : nullable;
     }
 
     public static <T, R> R notRet(T nullable, Function<T, R> func) {

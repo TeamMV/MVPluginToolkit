@@ -51,6 +51,7 @@ public class CommandRoute {
         int checkLen = args.length - 1;
         if (checkLen == 0) return signature.len() > 0;
         for (int i = 0; i < checkLen; i++) {
+            if (i >= signature.len()) return false;
             var pair = signature.get(i);
             if (pair.is(ArgumentType.class)) {
                 ArgumentType type = pair.value();

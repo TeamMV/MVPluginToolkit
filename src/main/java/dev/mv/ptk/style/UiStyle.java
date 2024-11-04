@@ -30,4 +30,6 @@ public abstract class UiStyle {
     public abstract String getNumericHighlightFormat();
     public abstract String getAlphabeticHighlightFormat();
     public abstract String getSeparatorFormat();
+    public abstract String getPositiveFormat();
+    public abstract String getNegativeFormat();
 }

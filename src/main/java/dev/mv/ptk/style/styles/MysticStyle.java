@@ -9,25 +9,26 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-public class ModernStyle extends UiStyle {
+public class MysticStyle extends UiStyle {
+
     @Override
     public ItemStack getStyleDisplayItem() {
         return DisplayBuilder
-                .build(Material.QUARTZ_BLOCK)
-                .withTitle("&b&lModern")
-                .withLore("&7Author: &amqxf")
+                .build(Material.DIAMOND)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&b&lMystic &3&lStyle")
+                .withLore("&7Author: &aChatGPT-4o\n&aAn ethereal style for your UI\n&7Enchanted with mystical energies.")
                 .build();
     }
 
     @Override
     public String getStyleName() {
-        return "modern";
+        return "Mystic";
     }
 
     @Override
     public Material getAddButton() {
-        return Material.SUNFLOWER;
+        return Material.EMERALD;
     }
 
     @Override
@@ -37,53 +38,63 @@ public class ModernStyle extends UiStyle {
 
     @Override
     public Material getArrowButton() {
-        return Material.ARROW;
+        return Material.FEATHER;
     }
 
     @Override
     public Material getBorder() {
-        return Material.GRAY_STAINED_GLASS_PANE;
+        return Material.PURPLE_STAINED_GLASS_PANE;
     }
 
     @Override
     public ItemStack getBackButton() {
-        return DisplayBuilder.build(Material.ARROW)
-                .withTitle("&fBack")
+        return DisplayBuilder
+                .build(Material.BARRIER)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&c&lBack")
+                .withLore("&7Click to return to the previous menu")
                 .build();
     }
 
     @Override
     public Pair<BorderToolbar.Border, Integer> getBackButtonPosition() {
-        return new Pair<>(BorderToolbar.Border.BOTTOM, 3);
+        return new Pair<>(BorderToolbar.Border.BOTTOM, 1);
     }
 
     @Override
     public Option<ItemStack> getCloseButton() {
-        return Option.some(DisplayBuilder.build(Material.BARRIER)
-                .withTitle("&cClose")
-                .withFlag(ItemFlag.HIDE_ATTRIBUTES)
-                .build());
+        return Option.some(
+                DisplayBuilder
+                        .build(Material.REDSTONE)
+                        .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                        .withTitle("&4&lClose")
+                        .withLore("&7Exit the menu")
+                        .build()
+        );
     }
 
     @Override
     public Option<Pair<BorderToolbar.Border, Integer>> getCloseButtonPosition() {
-        return Option.some(new Pair<>(BorderToolbar.Border.BOTTOM, 4));
+        return Option.some(new Pair<>(BorderToolbar.Border.BOTTOM, 7));
     }
 
     @Override
     public ItemStack getEnabled() {
-        return DisplayBuilder.build(Material.LIME_DYE)
-                .withTitle("&aEnabled")
+        return DisplayBuilder
+                .build(Material.LIME_DYE)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&a&lEnabled")
+                .withLore("&7This feature is currently enabled")
                 .build();
     }
 
     @Override
     public ItemStack getDisabled() {
-        return DisplayBuilder.build(Material.GRAY_DYE)
-                .withTitle("&7Disabled")
+        return DisplayBuilder
+                .build(Material.GRAY_DYE)
                 .withFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .withTitle("&7&lDisabled")
+                .withLore("&7This feature is currently disabled")
                 .build();
     }
 
@@ -99,41 +110,41 @@ public class ModernStyle extends UiStyle {
 
     @Override
     public String getDebugFormat() {
-        return "&8";
-    }
-
-    @Override
-    public String getPrimarySystemFormat() {
         return "&e";
     }
 
     @Override
-    public String getSecondarySystemFormat() {
-        return "&f";
-    }
-
-    @Override
-    public String getNumericHighlightFormat() {
-        return "&a";
-    }
-
-    @Override
-    public String getAlphabeticHighlightFormat() {
+    public String getPrimarySystemFormat() {
         return "&b";
     }
 
     @Override
+    public String getSecondarySystemFormat() {
+        return "&7";
+    }
+
+    @Override
+    public String getNumericHighlightFormat() {
+        return "&e&l";
+    }
+
+    @Override
+    public String getAlphabeticHighlightFormat() {
+        return "&b&l";
+    }
+
+    @Override
     public String getSeparatorFormat() {
-        return "&9";
+        return "&7";
     }
 
     @Override
     public String getPositiveFormat() {
-        return "&a";
+        return "&a&l";
     }
 
     @Override
     public String getNegativeFormat() {
-        return "&c";
+        return "&c&l";
     }
 }

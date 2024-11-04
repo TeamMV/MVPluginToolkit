@@ -92,32 +92,32 @@ public class CarbonStyle extends UiStyle {
 
     @Override
     public String getErrorFormat() {
-        return "&c";
+        return "&4";
     }
 
     @Override
     public String getDefaultFormat() {
-        return "&7";
-    }
-
-    @Override
-    public String getDebugFormat() {
         return "&8";
     }
 
     @Override
+    public String getDebugFormat() {
+        return "&7";
+    }
+
+    @Override
     public String getPrimarySystemFormat() {
-        return "&e";
+        return "&3";
     }
 
     @Override
     public String getSecondarySystemFormat() {
-        return "&f";
+        return "&8";
     }
 
     @Override
     public String getNumericHighlightFormat() {
-        return "&a";
+        return "&2";
     }
 
     @Override
@@ -127,6 +127,16 @@ public class CarbonStyle extends UiStyle {
 
     @Override
     public String getSeparatorFormat() {
-        return "&9&l";
+        return "&8&l";
+    }
+
+    @Override
+    public String getPositiveFormat() {
+        return "&a&l";
+    }
+
+    @Override
+    public String getNegativeFormat() {
+        return "&4&l";
     }
 }
